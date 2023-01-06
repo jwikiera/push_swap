@@ -39,7 +39,9 @@ INCLUDES				:= -I$(LIBFT_HEADERS) -I$(LIBPRINTF_HEADERS) -I$(INCLUDE_DIR) $(LINU
 SOURCES_DIRECTORY		:= ./sources/
 SOURCES_LIST			:= main.c\
 							chk_args.c\
-							args_to_intarray.c
+							args_to_intarray.c\
+							sort_two.c\
+							sort_three.c
 SOURCES					:= $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 HEADER_LIST				:= push_swap.h
 HEADER_FILES			:= $(addprefix $(INCLUDE_DIR), $(HEADER_LIST))

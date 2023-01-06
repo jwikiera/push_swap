@@ -14,15 +14,15 @@ Do nothing if there is only one or no elements.
 Do nothing if b is empty.
 - `pb` (push b): Take the first element at the top of a and put it at the top of b.
 Do nothing if a is empty.
-- ra (rotate a): Shift up all elements of stack a by 1.
+- `ra` (rotate a): Shift up all elements of stack a by 1.
 The first element becomes the last one.
-- rb (rotate b): Shift up all elements of stack b by 1.
+- `rb` (rotate b): Shift up all elements of stack b by 1.
 The first element becomes the last one.
-- rr : ra and rb at the same time.
-- rra (reverse rotate a): Shift down all elements of stack a by 1.
+- `rr` : ra and rb at the same time.
+- `rra` (reverse rotate a): Shift down all elements of stack a by 1.
 The last element becomes the first one.
-- rrb (reverse rotate b): Shift down all elements of stack b by 1.
+- `rrb` (reverse rotate b): Shift down all elements of stack b by 1.
 The last element becomes the first one.
-- rrr : rra and rrb at the same time.
+- `rrr` : rra and rrb at the same time.
 
 The goal is to output a set of these instructions and keep their number as low as possible.

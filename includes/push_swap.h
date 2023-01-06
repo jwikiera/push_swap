@@ -24,7 +24,9 @@
 # include <libft.h>
 # include <ft_printf.h>
 
-int	chk_args(int argc, char *argv[]);
-int	*args_to_intarray(int argc, char *argv[]);
+int		chk_args(int argc, char *argv[]);
+int		*args_to_intarray(int argc, char *argv[]);
+void	sort_two(const int *arr);
+void	sort_three(int *arr);
 
 #endif

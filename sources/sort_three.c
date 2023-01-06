@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   sort_two.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,23 +12,22 @@
 
 #include "push_swap.h"
 
-int	main(int argc, char *argv[])
+void	sort_three(int *arr)
 {
-	int	*array;
+	int	swp;
 
-	if (argc < 2)
-		exit(0);
-	if (!chk_args(argc, argv))
+	if (arr[0] >= arr[1] && arr[0] >= arr[2])
 	{
-		ft_putstr_fd("Error\n", 2);
-		exit(1);
+		ft_putstr_fd("ra\n", 1);
+		swp = arr[0];
+		arr[0] = arr[2];
+		arr[2] = swp;
+	} else if (arr[1] >= arr[2])
+	{
+		ft_putstr_fd("ra\n", 1);
+		swp = arr[1];
+		arr[1] = arr[2];
+		arr[2] = swp;
 	}
-	array = args_to_intarray(argc, argv);
-	if (argc == 2)
-		exit(0);
-	else if (argc == 3)
-		sort_two(array);
-	else if (argc == 4)
-		sort_three(array);
-	return (0);
+	sort_two(arr);
 }

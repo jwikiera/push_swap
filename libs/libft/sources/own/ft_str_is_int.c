@@ -90,7 +90,8 @@ int	ft_str_is_int(const char *str)
 		return (free_trimmed(trimmed));
 	if (ft_strlen(trimmed) > 10)
 		return (free_trimmed(trimmed));
-	if (ft_atoi_l(trimmed) * sign > INT_MAX || ft_atoi_l(trimmed) * sign < INT_MIN)
+	if (ft_atoi_l(trimmed) * sign > INT_MAX
+		|| ft_atoi_l(trimmed) * sign < INT_MIN)
 		return (free_trimmed(trimmed));
 	return (1);
 }

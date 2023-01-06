@@ -15,7 +15,7 @@
 static int	my_isspace(char c)
 {
 	return (c == '\t' || c == '\n' || c == '\v' || c == '\f'
-			|| c == '\r' || c == ' ');
+		|| c == '\r' || c == ' ');
 }
 
 static int	chr_to_dgt(char c)
