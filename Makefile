@@ -17,7 +17,7 @@ else
 endif
 
 CC						:= cc
-CFLAGS					:= -Wall -Wextra -Werror -O3 -fno-omit-frame-pointer -ggdb -O0 -fstack-protector-all $(FSANITIZE) $(OS_FLAG)
+CFLAGS					:= -Wall -Wextra -Werror -pedantic -O3 -fno-omit-frame-pointer -ggdb -O0 -fstack-protector-all $(FSANITIZE) $(OS_FLAG)
 RM						:= rm -f
 
 LIB_DIRECTORY			:= ./libs/
@@ -41,7 +41,11 @@ SOURCES_LIST			:= main.c\
 							chk_args.c\
 							args_to_intarray.c\
 							sort_two.c\
-							sort_three.c
+							sort_three.c\
+							sort_five.c\
+							sort_hundred.c\
+							sort_fivehundred.c\
+							heap_sort.c
 SOURCES					:= $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 HEADER_LIST				:= push_swap.h
 HEADER_FILES			:= $(addprefix $(INCLUDE_DIR), $(HEADER_LIST))

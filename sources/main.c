@@ -12,6 +12,17 @@
 
 #include "push_swap.h"
 
+/*
+	Sorting 5 values:
+ 	- no more than 12 actions.
+
+ 	Sorting 100 values:
+    - 5 points for less than 700 actions
+
+	Sorting 500 values:
+    - 5 points for less than 5500 actions
+*/
+
 int	main(int argc, char *argv[])
 {
 	int	*array;
@@ -25,10 +36,18 @@ int	main(int argc, char *argv[])
 	}
 	array = args_to_intarray(argc, argv);
 	if (argc == 2)
+		argc = count_words(argv[1], ' ') + 1;
+	if (argc == 2)
 		exit(0);
 	else if (argc == 3)
 		sort_two(array);
 	else if (argc == 4)
 		sort_three(array);
+	else if (argc < 6)
+		sort_five(array, argc - 1);
+	else if (argc < 101)
+		sort_hundred(array, argc - 1);
+	else
+		sort_fivehundred(array, argc - 1);
 	return (0);
 }

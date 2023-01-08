@@ -26,7 +26,12 @@
 
 int		chk_args(int argc, char *argv[]);
 int		*args_to_intarray(int argc, char *argv[]);
+int		*one_arg_to_intarray(char **split_res, size_t word_count);
 void	sort_two(const int *arr);
-void	sort_three(int *arr);
+void	sort_three(const int *arr);
+void	sort_five(const int *arr, size_t len);
+void	sort_hundred(const int *arr, size_t len);
+void	sort_fivehundred(const int *arr, size_t len);
+void	ps_heapsort(const int *arr, size_t len);
 
 #endif
