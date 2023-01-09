@@ -93,5 +93,6 @@ int	ft_str_is_int(const char *str)
 	if (ft_atoi_l(trimmed) * sign > INT_MAX
 		|| ft_atoi_l(trimmed) * sign < INT_MIN)
 		return (free_trimmed(trimmed));
+	free(trimmed);
 	return (1);
 }

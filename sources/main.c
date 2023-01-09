@@ -38,7 +38,10 @@ int	main(int argc, char *argv[])
 	if (argc == 2)
 		argc = count_words(argv[1], ' ') + 1;
 	if (argc == 2)
+	{
+		free(array);
 		exit(0);
+	}
 	else if (argc == 3)
 		sort_two(array);
 	else if (argc == 4)
@@ -49,5 +52,6 @@ int	main(int argc, char *argv[])
 		sort_hundred(array, argc - 1);
 	else
 		sort_fivehundred(array, argc - 1);
+	free(array);
 	return (0);
 }

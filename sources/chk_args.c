@@ -67,7 +67,7 @@ int	chk_one_arg(char *argv[])
 	{
 		if (!ft_str_is_int(split_res[i]))
 		{
-			free(split_res);
+			ft_free_split(split_res, word_count);
 			return (0);
 		}
 		i ++;

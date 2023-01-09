@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_free_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,49 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-/* This functions assumes the args are valid ints */
-int	*args_to_intarray(int argc, char *argv[])
-{
-	int	i;
-	int	*res;
-
-	if (argc == 2)
-		return (one_arg_to_intarray(
-				ft_split(argv[1], ' '),
-				count_words(argv[1], ' ')));
-	res = malloc(sizeof(*res) * (argc - 1));
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (i < argc - 1)
-	{
-		res[i] = ft_atoi(argv[i + 1]);
-		i ++;
-	}
-	return (res);
-}
-
-int	*one_arg_to_intarray(char **split_res, size_t word_count)
+void	ft_free_split(char **split_res, size_t size)
 {
 	size_t	i;
-	int		*res;
 
 	if (!split_res)
-		return (NULL);
-	res = malloc(sizeof(*res) * (word_count));
-	if (!res)
-	{
-		ft_free_split(split_res, word_count);
-		return (NULL);
-	}
+		return ;
 	i = 0;
-	while (i < word_count)
+	while (i < size)
 	{
-		res[i] = ft_atoi(split_res[i]);
+		if (split_res[i])
+			free(split_res[i]);
 		i ++;
 	}
-	ft_free_split(split_res, word_count);
-	return (res);
+	free(split_res);
 }

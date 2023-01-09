@@ -110,3 +110,8 @@ funcs: $(NAME)
 
 test: $(NAME)
 	./$(NAME)
+
+francinette_lft:
+	cd libs/libft && cp includes/libft.h .
+	cd libs/libft && ~/francinette/tester.sh
+	cd libs/libft && rm libft.h
