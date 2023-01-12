@@ -48,8 +48,10 @@ SOURCES_LIST			:= main.c\
 							mysort.c\
 							intarr_bubblesort.c\
 							stack_operations.c\
+							stack_operations2.c\
 							stack_init.c\
-							array_shifts.c
+							array_shifts.c\
+							ps_print_util.c
 SOURCES					:= $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 HEADER_LIST				:= push_swap.h
 HEADER_FILES			:= $(addprefix $(INCLUDE_DIR), $(HEADER_LIST))

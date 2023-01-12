@@ -12,14 +12,28 @@
 
 #include "push_swap.h"
 
-void	ps_mysort(const int *arr, size_t len)
+void	ps_mysort(int *arr, size_t len)
 {
-	int	*sorted_array;
-	int	*stack_b;
+	int		*sorted_array;
+	t_stack	*stack_a;
+	t_stack	*stack_b;
 
-	stack_b = malloc(len * sizeof(*stack_b));
-	if (!stack_b)
+	stack_a = stack_init(arr, len, 0, 'a');
+	if (!stack_a)
+	{
+		free(arr);
 		return ;
+	}
+	stack_b = stack_init_empty(len, len - 1, 'b');
+	if (!stack_b)
+	{
+		free(stack_a);
+		return ;
+	}
+	print_stack(stack_a);
+	op_p(stack_a, stack_b, 1);
+	print_stack(stack_a);
+	print_stack(stack_b);
 	sorted_array = intarr_bubblesort(arr, len);
 	if (sorted_array == NULL)
 	{

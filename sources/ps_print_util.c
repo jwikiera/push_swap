@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_init.c                                       :+:      :+:    :+:   */
+/*   ps_print_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,42 +12,22 @@
 
 #include "push_swap.h"
 
-t_stack	*stack_init(int *arr, size_t size, size_t top, char type)
+void	print_stack(t_stack *stack)
 {
-	t_stack	*res;
+	size_t	i;
 
-	res = malloc(sizeof(*res));
-	if (!res)
-		return (NULL);
-	res->arr = arr;
-	res->size = size;
-	res->top = top;
-	res->type = type;
-	return (res);
-}
-
-t_stack	*stack_init_empty(size_t size, size_t top, char type)
-{
-	t_stack	*res;
-
-	res = malloc(sizeof(*res));
-	if (!res)
-		return (NULL);
-	res->arr = ft_calloc(1, sizeof(int) * size);
-	if (!res->arr)
+	ft_printf("Stack %c (%p), size: %u, top: %u, arr: [",
+		stack->type, stack, stack->size, stack->top);
+	i = 0;
+	while (i < stack->size)
 	{
-		free(res);
-		return (NULL);
+		if (i == stack->top)
+			ft_printf("@%d", stack->arr[i]);
+		else
+			ft_printf("%d", stack->arr[i]);
+		if (i < stack->size - 1)
+			ft_printf(", ");
+		i ++;
 	}
-	res->size = size;
-	res->top = top;
-	res->type = type;
-	return (res);
-}
-
-void	free_stack(t_stack *stack)
-{
-	if (stack->arr)
-		free(stack->arr);
-	free(stack);
+	ft_printf("]\n");
 }

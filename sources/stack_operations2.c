@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_init.c                                       :+:      :+:    :+:   */
+/*   stack_operations2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,42 +12,25 @@
 
 #include "push_swap.h"
 
-t_stack	*stack_init(int *arr, size_t size, size_t top, char type)
+void	op_rr(t_stack *stack, int print)
 {
-	t_stack	*res;
+	int	swp;
 
-	res = malloc(sizeof(*res));
-	if (!res)
-		return (NULL);
-	res->arr = arr;
-	res->size = size;
-	res->top = top;
-	res->type = type;
-	return (res);
-}
-
-t_stack	*stack_init_empty(size_t size, size_t top, char type)
-{
-	t_stack	*res;
-
-	res = malloc(sizeof(*res));
-	if (!res)
-		return (NULL);
-	res->arr = ft_calloc(1, sizeof(int) * size);
-	if (!res->arr)
+	if (print)
 	{
-		free(res);
-		return (NULL);
+		ft_putstr_fd("rr", 1);
+		ft_putchar_fd(stack->type, 1);
+		ft_putchar_fd('\n', 1);
 	}
-	res->size = size;
-	res->top = top;
-	res->type = type;
-	return (res);
+	swp = stack->arr[stack->size - 1];
+	shift_down(stack->arr, stack->size);
+	stack->arr[stack->top] = swp;
 }
 
-void	free_stack(t_stack *stack)
+void	op_rrr(t_stack *stack_a, t_stack *stack_b, int print)
 {
-	if (stack->arr)
-		free(stack->arr);
-	free(stack);
+	if (print)
+		ft_putstr_fd("rrr\n", 1);
+	op_rr(stack_a, 0);
+	op_rr(stack_b, 0);
 }

@@ -16,13 +16,34 @@ void	shift_down(int *arr, size_t len)
 {
 	size_t	i;
 	int		swp;
+	int		swp2;
 
 	i = 0;
 	swp = 0;
 	while (i < len - 1)
 	{
+		swp2 = arr[i];
 		arr[i] = swp;
-		arr[i + 1] = arr[i];
+		swp = arr[i + 1];
+		arr[i + 1] = swp2;
 		i ++;
+	}
+}
+
+void	shift_up(int *arr, size_t len)
+{
+	size_t	i;
+	int		swp;
+	int		swp2;
+
+	i = len - 1;
+	swp = 0;
+	while (i > 1)
+	{
+		swp2 = arr[i];
+		arr[i] = swp;
+		swp = arr[i - 1];
+		arr[i - 1] = swp2;
+		i --;
 	}
 }
