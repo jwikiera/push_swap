@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heap_sort.c                                        :+:      :+:    :+:   */
+/*   stack_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,8 +12,16 @@
 
 #include "push_swap.h"
 
-void	ps_heapsort(const int *arr, size_t len)
+t_stack	*stack_init(int *arr, size_t size, size_t top, char type)
 {
-	(void) arr;
-	(void) len;
+	t_stack	*res;
+
+	res = malloc(sizeof(*arr));
+	if (!res)
+		return (NULL);
+	res->arr = arr;
+	res->size = size;
+	res->top = top;
+	res->type = type;
+	return (res);
 }

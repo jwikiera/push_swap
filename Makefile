@@ -45,7 +45,11 @@ SOURCES_LIST			:= main.c\
 							sort_five.c\
 							sort_hundred.c\
 							sort_fivehundred.c\
-							heap_sort.c
+							mysort.c\
+							intarr_bubblesort.c\
+							stack_operations.c\
+							stack_init.c\
+							array_shifts.c
 SOURCES					:= $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 HEADER_LIST				:= push_swap.h
 HEADER_FILES			:= $(addprefix $(INCLUDE_DIR), $(HEADER_LIST))

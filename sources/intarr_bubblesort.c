@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_five.c                                        :+:      :+:    :+:   */
+/*   intarr_bubblesort.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,43 @@
 
 #include "push_swap.h"
 
-void	sort_five(const int *arr, size_t len)
+static int	is_sorted(const int *arr, size_t len)
 {
-	ps_mysort(arr, len);
+	size_t	i;
+
+	i = 0;
+	while (i < len - 1)
+	{
+		if (arr[i] > arr[i + 1])
+			return (0);
+		i ++;
+	}
+	return (1);
+}
+
+int	*intarr_bubblesort(const int *arr, size_t len)
+{
+	int		*res;
+	int		swp;
+	size_t	i;
+
+	res = malloc(len * sizeof(*res));
+	if (!res)
+		return (NULL);
+	ft_memcpy(res, arr, len * sizeof(*res));
+	while (!is_sorted(res, len))
+	{
+		i = 0;
+		while (i < len - 1)
+		{
+			if (res[i] > res[i + 1])
+			{
+				swp = res[i];
+				res[i] = res[i + 1];
+				res[i + 1] = swp;
+			}
+			i ++;
+		}
+	}
+	return (res);
 }

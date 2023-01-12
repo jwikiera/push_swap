@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_five.c                                        :+:      :+:    :+:   */
+/*   stack_operations.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,35 @@
 
 #include "push_swap.h"
 
-void	sort_five(const int *arr, size_t len)
+void	s(t_stack *stack, int print)
 {
-	ps_mysort(arr, len);
+	int	swp;
+
+	if (print)
+	{
+		ft_putchar_fd('s' ,1);
+		ft_putchar_fd(stack->type ,1);
+		ft_putchar_fd('\n' ,1);
+	}
+	if (stack->top < stack->size - 2)
+		return ;
+	swp = stack->arr[stack->top];
+	stack->arr[stack->top] = stack->arr[stack->top + 1];
+	stack->arr[stack->top + 1] = swp;
+}
+
+void	ss(t_stack *stack_a, t_stack *stack_b, int print)
+{
+	if (print)
+		ft_putstr_fd("ss\n", 1);
+	s(stack_a, 0);
+	s(stack_b, 0);
+}
+
+void	p(t_stack *stack_src, t_stack *stack_dst, int print)
+{
+	if (print)
+	{
+
+	}
 }

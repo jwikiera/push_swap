@@ -37,6 +37,7 @@ int	main(int argc, char *argv[])
 	array = args_to_intarray(argc, argv);
 	if (argc == 2)
 		argc = count_words(argv[1], ' ') + 1;
+	ft_printf("arg amount: %d\n", argc);
 	if (argc == 2)
 	{
 		free(array);
@@ -46,9 +47,9 @@ int	main(int argc, char *argv[])
 		sort_two(array);
 	else if (argc == 4)
 		sort_three(array);
-	else if (argc < 6)
+	else if (argc < 7)
 		sort_five(array, argc - 1);
-	else if (argc < 101)
+	else if (argc < 102)
 		sort_hundred(array, argc - 1);
 	else
 		sort_fivehundred(array, argc - 1);

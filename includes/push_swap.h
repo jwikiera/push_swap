@@ -32,6 +32,17 @@ void	sort_three(const int *arr);
 void	sort_five(const int *arr, size_t len);
 void	sort_hundred(const int *arr, size_t len);
 void	sort_fivehundred(const int *arr, size_t len);
-void	ps_heapsort(const int *arr, size_t len);
+void	ps_mysort(const int *arr, size_t len);
+int		*intarr_bubblesort(const int *arr, size_t len);
+
+typedef struct s_stack
+{
+	size_t	size;
+	size_t	top;
+	int		*arr;
+	char	type;
+}	t_stack;
+
+t_stack	*stack_init(int *arr, size_t size, size_t top, char type);
 
 #endif
