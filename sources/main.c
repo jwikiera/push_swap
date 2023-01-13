@@ -54,6 +54,6 @@ int	main(int argc, char *argv[])
 		sort_hundred(array, argc - 1);
 	else
 		sort_fivehundred(array, argc - 1);
-	free(array);
+	//free(array);
 	return (0);
 }
