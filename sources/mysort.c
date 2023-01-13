@@ -31,7 +31,8 @@ void	ps_mysort(int *arr, int len)
 		return ;
 	}
 	print_stack(stack_a);
-	op_s(stack_a, 1);
+	print_stack(stack_b);
+	op_r(stack_a, 1);
 	print_stack(stack_a);
 	print_stack(stack_b);
 	sorted_array = intarr_bubblesort(arr, len);

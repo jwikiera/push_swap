@@ -22,6 +22,8 @@ void	op_rr(t_stack *stack, int print)
 		ft_putchar_fd(stack->type, 1);
 		ft_putchar_fd('\n', 1);
 	}
+	if (stack->top == -1)
+		return ;
 	swp = stack->arr[stack->size - 1];
 	shift_down(stack->arr, stack->size);
 	stack->arr[stack->top] = swp;

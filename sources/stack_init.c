@@ -34,6 +34,7 @@ t_stack	*stack_init_empty(int size, char type)
 	if (!res)
 		return (NULL);
 	res->arr = ft_calloc(1, sizeof(int) * size);
+	//res->arr = malloc(sizeof(int) * size);
 	if (!res->arr)
 	{
 		free(res);

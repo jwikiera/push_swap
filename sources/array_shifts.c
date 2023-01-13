@@ -12,38 +12,40 @@
 
 #include "push_swap.h"
 
+/* Moves all numbers in an array one slot to the right */
 void	shift_down(int *arr, int len)
 {
 	int	i;
-	int	swp;
-	int	swp2;
+	int	swp[2];
+	int	swp_index;
 
 	i = 0;
-	swp = 0;
-	while (i < len - 1)
+	swp[0] = 0;
+	swp_index = 0;
+	while (i < len)
 	{
-		swp2 = arr[i];
-		arr[i] = swp;
-		swp = arr[i + 1];
-		arr[i + 1] = swp2;
+		swp[(swp_index + 1) % 2] = arr[i];
+		arr[i] = swp[swp_index % 2];
 		i ++;
+		swp_index ++;
 	}
 }
 
+/* Moves all numbers in an array one slot to the left */
 void	shift_up(int *arr, int len)
 {
 	int	i;
-	int	swp;
-	int	swp2;
+	int	swp[2];
+	int	swp_index;
 
 	i = len - 1;
-	swp = 0;
-	while (i > 1)
+	swp[0] = 0;
+	swp_index = 0;
+	while (i >= 0)
 	{
-		swp2 = arr[i];
-		arr[i] = swp;
-		swp = arr[i - 1];
-		arr[i - 1] = swp2;
+		swp[(swp_index + 1) % 2] = arr[i];
+		arr[i] = swp[swp_index % 2];
 		i --;
+		swp_index ++;
 	}
 }

@@ -22,7 +22,7 @@ void	op_s(t_stack *stack, int print)
 		ft_putchar_fd(stack->type, 1);
 		ft_putchar_fd('\n', 1);
 	}
-	if (stack->top > stack->size - 2)
+	if (stack->top == -1 || stack->top > stack->size - 2)
 		return ;
 	swp = stack->arr[stack->top];
 	stack->arr[stack->top] = stack->arr[stack->top + 1];
@@ -42,12 +42,23 @@ void	op_p(t_stack *stack_src, t_stack *stack_dst, int print)
 	if (print)
 	{
 		ft_putchar_fd('p', 1);
-		ft_putchar_fd(stack_src->type, 1);
+		ft_putchar_fd(stack_dst->type, 1);
 		ft_putchar_fd('\n', 1);
 	}
-	stack_dst->arr[stack_dst->top] = stack_src->arr[stack_src->top];
-	stack_dst->top --;
-	stack_src->top ++;
+	if (stack_src->top == -1)
+		return ;
+	if (stack_dst->top == -1)
+		stack_dst->arr[stack_dst->size - 1] = stack_src->arr[stack_src->top];
+	else
+		stack_dst->arr[stack_dst->top - 1] = stack_src->arr[stack_src->top];
+	if (stack_dst->top == -1)
+		stack_dst->top = stack_dst->size - 1;
+	else
+		stack_dst->top --;
+	if (stack_src->top == stack_src->size - 1)
+		stack_src->top = -1;
+	else
+		stack_src->top ++;
 }
 
 void	op_r(t_stack *stack, int print)
@@ -60,6 +71,8 @@ void	op_r(t_stack *stack, int print)
 		ft_putchar_fd(stack->type, 1);
 		ft_putchar_fd('\n', 1);
 	}
+	if (stack->top == -1)
+		return ;
 	swp = stack->arr[stack->top];
 	shift_up(stack->arr, stack->size);
 	stack->arr[stack->size - 1] = swp;
