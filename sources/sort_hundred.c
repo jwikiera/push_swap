@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-void	sort_hundred(const int *arr, size_t len)
+void	sort_hundred(const int *arr, int len)
 {
 	(void) len;
 	if (arr[1] < arr[0])

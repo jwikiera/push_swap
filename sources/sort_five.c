@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-void	sort_five(const int *arr, size_t len)
+void	sort_five(int *arr, int len)
 {
 	ps_mysort(arr, len);
 }

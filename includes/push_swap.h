@@ -29,22 +29,22 @@ int		*args_to_intarray(int argc, char *argv[]);
 int		*one_arg_to_intarray(char **split_res, size_t word_count);
 void	sort_two(const int *arr);
 void	sort_three(const int *arr);
-void	sort_five(const int *arr, size_t len);
-void	sort_hundred(const int *arr, size_t len);
-void	sort_fivehundred(const int *arr, size_t len);
-void	ps_mysort(int *arr, size_t len);
-int		*intarr_bubblesort(const int *arr, size_t len);
+void	sort_five(int *arr, int len);
+void	sort_hundred(const int *arr, int len);
+void	sort_fivehundred(const int *arr, int len);
+void	ps_mysort(int *arr, int len);
+int		*intarr_bubblesort(const int *arr, int len);
 
 typedef struct s_stack
 {
-	size_t	size;
-	size_t	top;
+	int		size;
+	int		top;
 	int		*arr;
 	char	type;
 }	t_stack;
 
-t_stack	*stack_init(int *arr, size_t size, size_t top, char type);
-t_stack	*stack_init_empty(size_t size, size_t top, char type);
+t_stack	*stack_init(int *arr, int size, char type);
+t_stack	*stack_init_empty(int size, char type);
 void	free_stack(t_stack *stack);
 void	print_stack(t_stack *stack);
 
@@ -56,7 +56,7 @@ void	op_rarb(t_stack *stack_a, t_stack *stack_b, int print);
 void	op_rr(t_stack *stack, int print);
 void	op_rrr(t_stack *stack_a, t_stack *stack_b, int print);
 
-void	shift_down(int *arr, size_t len);
-void	shift_up(int *arr, size_t len);
+void	shift_down(int *arr, int len);
+void	shift_up(int *arr, int len);
 
 #endif

@@ -14,7 +14,7 @@
 
 void	print_stack(t_stack *stack)
 {
-	size_t	i;
+	int	i;
 
 	ft_printf("Stack %c (%p), size: %u, top: %u, arr: [",
 		stack->type, stack, stack->size, stack->top);

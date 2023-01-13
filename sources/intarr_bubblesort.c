@@ -12,9 +12,9 @@
 
 #include "push_swap.h"
 
-static int	is_sorted(const int *arr, size_t len)
+static int	is_sorted(const int *arr, int len)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (i < len - 1)
@@ -26,11 +26,11 @@ static int	is_sorted(const int *arr, size_t len)
 	return (1);
 }
 
-int	*intarr_bubblesort(const int *arr, size_t len)
+int	*intarr_bubblesort(const int *arr, int len)
 {
-	int		*res;
-	int		swp;
-	size_t	i;
+	int	*res;
+	int	swp;
+	int	i;
 
 	res = malloc(len * sizeof(*res));
 	if (!res)

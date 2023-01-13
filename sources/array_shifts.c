@@ -12,11 +12,11 @@
 
 #include "push_swap.h"
 
-void	shift_down(int *arr, size_t len)
+void	shift_down(int *arr, int len)
 {
-	size_t	i;
-	int		swp;
-	int		swp2;
+	int	i;
+	int	swp;
+	int	swp2;
 
 	i = 0;
 	swp = 0;
@@ -30,11 +30,11 @@ void	shift_down(int *arr, size_t len)
 	}
 }
 
-void	shift_up(int *arr, size_t len)
+void	shift_up(int *arr, int len)
 {
-	size_t	i;
-	int		swp;
-	int		swp2;
+	int	i;
+	int	swp;
+	int	swp2;
 
 	i = len - 1;
 	swp = 0;

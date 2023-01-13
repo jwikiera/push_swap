@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-t_stack	*stack_init(int *arr, size_t size, size_t top, char type)
+t_stack	*stack_init(int *arr, int size, char type)
 {
 	t_stack	*res;
 
@@ -21,12 +21,12 @@ t_stack	*stack_init(int *arr, size_t size, size_t top, char type)
 		return (NULL);
 	res->arr = arr;
 	res->size = size;
-	res->top = top;
+	res->top = 0;
 	res->type = type;
 	return (res);
 }
 
-t_stack	*stack_init_empty(size_t size, size_t top, char type)
+t_stack	*stack_init_empty(int size, char type)
 {
 	t_stack	*res;
 
@@ -40,7 +40,7 @@ t_stack	*stack_init_empty(size_t size, size_t top, char type)
 		return (NULL);
 	}
 	res->size = size;
-	res->top = top;
+	res->top = -1;
 	res->type = type;
 	return (res);
 }
