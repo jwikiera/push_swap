@@ -1,9 +1,14 @@
 # push_swap
 
-This is a 42 School project. It is a console program written in C sorting a set of integers using two stacks and 
-a set of instructions to move the numbers on and between the stacks.
+This is a [42 School](https://www.42lausanne.ch/) project. It is a console program (`push_swap`) written in C, sorting a set of
+integers using two stacks and a set of instructions to move the numbers on and between the stacks.
+The goal is to output a set of these instructions and keep their number as low as possible.
 
-Instructions:
+The bonus for this assignment is creating a second program (`checker`) that checks if a given set of instructions sorts a given set of numbers correctly.
+
+I have also written a more advanced tool for testing, in Python (`tester.py`) which, besides having the same abilities as `checker` does, can also generate arbitrary amounts of tests. Its `argparse` interface includes all necessary details.
+
+Here are the instructions used for sorting:
 
 - `sa` (swap a): Swap the first 2 elements at the top of stack a.
 Do nothing if there is only one or no elements.
@@ -25,4 +30,21 @@ The last element becomes the first one.
 The last element becomes the first one.
 - `rrr` : rra and rrb at the same time.
 
-The goal is to output a set of these instructions and keep their number as low as possible.
+
+How the amount of instructions affects the grade:
+* Sorting 3 values: no more than 3 actions. 
+* Sorting 5 values: no more than 12 actions.
+* Sorting 100 values: rating from 1 to 5 points depending on the number of actions:
+* 5 points for less than 700 actions
+  * 4 points for less than 900
+  * 3 points for less than 1100
+  * 2 points for less than 1300
+  * 1 point for less than 1500
+* Sorting 500 values: rating from 1 to 5 points depending on the number of actions:
+  * 5 points for less than 5500 actions
+  * 4 points for less than 7000
+  * 3 points for less than 8500
+  * 2 points for less than 10000
+  * 1 point for less than 11500
+
+Validating the project requires at least 80/100 points (there are also points attributed for other things).

@@ -16,7 +16,7 @@ static int	indexof_target(t_stack *stack, int target)
 {
 	int	index;
 
-	index = 0;
+	index = stack->top;
 	while (stack->arr[index] != target)
 		index ++;
 	return (index);
@@ -49,7 +49,7 @@ void	ps_mysort(int *arr, int len)
 	}
 	//ft_printf("sorted\n");
 	sort_index = 0;
-	while (stack_a->top != stack_a->size - 1)
+	while (stack_a->top != stack_a->size - 2)
 	{
 		if (indexof_target(stack_a, sorted_array[sort_index]) == stack_a->top)
 		{
@@ -58,12 +58,17 @@ void	ps_mysort(int *arr, int len)
 		}
 		else
 		{
-			if (indexof_target(stack_a, sorted_array[sort_index]) > (stack_a->size - stack_a->top) / 2)
-				op_rr(stack_a, 1);
-			else
+			int index = indexof_target(stack_a, sorted_array[sort_index]);
+			int index_rel = index - stack_a->top;
+			int half = (stack_a->size - stack_a->top) / 2;
+			if (index_rel <= half)
 				op_r(stack_a, 1);
+			else
+				op_rr(stack_a, 1);
 		}
 	}
+	if (stack_a->arr[stack_a->top] > stack_a->arr[stack_a->top + 1])
+		op_s(stack_a, 1);
 	while (stack_b->top != -1)
 		op_p(stack_b, stack_a, 1);
 	print_stack(stack_a);
