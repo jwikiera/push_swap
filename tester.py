@@ -37,15 +37,20 @@ def my_int_type_2(x):
 
 # custom argpparse type representing a set
 def set_type(x):
+    int_lst = []
     lst = str(x).split()
-
-    try:
-        x = int(x)
-    except ValueError:
-        raise argparse.ArgumentTypeError("Amount has to be an integer.")
-    if x < 1 or x > 2147483647:
-        raise argparse.ArgumentTypeError("Minimum amount has to be greater than 0 and smaller than 2147483647.")
+    for elem in lst:
+        try:
+            x = int(x)
+        except ValueError:
+            raise argparse.ArgumentTypeError("Amount has to be an integer.")
+        if x < 1 or x > 2147483647:
+            raise argparse.ArgumentTypeError("Minimum amount has to be greater than 0 and smaller than 2147483647.")
+        if int(x) in int_lst:
+            raise argparse.ArgumentTypeError(f"Error: given set contains a duplicate ({x}).")
+        int_lst.append(int(x))
     return x
+
 
 # custom argparse type that checks if a specified file does exist and can be executed
 def my_bin_type(x):
@@ -58,7 +63,7 @@ def my_bin_type(x):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--set", type=str, help="Set of numbers to test.")
+    parser.add_argument("-s", "--set", type=set_type, nargs="?", help="Set of numbers to test.")
     parser.add_argument("-n", "--numamount", type=my_int_type, help="Amount of numbers in test sets.")
     parser.add_argument("-t", "--testamount", type=my_int_type, help="Amount of tests.")
     parser.add_argument("-i", "--minnum", type=my_int_type_2, nargs="?", const=-15000, default=-15000,
@@ -68,6 +73,12 @@ def main():
     parser.add_argument("-b", "--binary", type=my_bin_type, nargs="?", const="push_swap",
                         default="push_swap", help="Location of the tested binary. Default: \"push_swap\".")
     args = parser.parse_args()
+
+    if args.set is None:
+        if args.numamount is None or args.testamount is None:
+            parser.error("If no set is specified, both --numamount and --testamount are required.")
+            exit(2)
+            exit(2)
     print("testing push_swap...")
     nam = int(args.numamount)
     tam = int(args.testamount)

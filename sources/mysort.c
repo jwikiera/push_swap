@@ -74,6 +74,6 @@ void	ps_mysort(int *arr, int len)
 	print_stack(stack_a);
 	//print_stack(stack_b);
 	free_stack(stack_a);
-	free(stack_b);
+	free_stack(stack_b);
 	free(sorted_array);
 }
