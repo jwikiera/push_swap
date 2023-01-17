@@ -222,7 +222,14 @@ def check_sort(set_, instructions):
 
 
 # test a given set
-def do_test(binary, set_, errordisplay, errorabort, pointsfatal):
+def do_test(binary, set_, errordisplay, errorabort, pointsfatal, disablecolor):
+    red_ = RED if not disablecolor else ''
+    yellow_ = YELLOW if not disablecolor else ''
+    cyan_ = CYAN if not disablecolor else ''
+    magenta_ = MAGENTA if not disablecolor else ''
+    green_ = GREEN if not disablecolor else ''
+    nc_ = NC if not disablecolor else ''
+
     result = subprocess.run([os.path.abspath(binary), set_], stdout=subprocess.PIPE)
     res = None
     if result.stderr is not None:
@@ -246,19 +253,19 @@ def do_test(binary, set_, errordisplay, errorabort, pointsfatal):
             # print(f'Category: {category}')
             if POINT_DICT[category]['max'] != -1:
                 if operation_count > POINT_DICT[category]['max']:
-                    print(f'{RED}KO{NC} - Operations: {MAGENTA}{operation_count}{NC} (Maximum operations for category '
-                          f'{CYAN}{category}{NC} allowed is {CYAN}'
-                          f'{POINT_DICT[category]["max"]}{NC}.')
+                    print(f'{red_}KO{nc_} - Operations: {magenta_}{operation_count}{nc_} (Maximum operations for category '
+                          f'{cyan_}{category}{nc_} allowed is {cyan_}'
+                          f'{POINT_DICT[category]["max"]}{nc_}.')
                     if errordisplay or errorabort:
                         print(set_)
                     if errorabort:
                         print("Aborting, --errorabort was specified.")
                         exit(0)
                 else:
-                    print(f'{GREEN}OK{NC} - Operations: {MAGENTA}{operation_count}{NC}.')
+                    print(f'{green_}OK{nc_} - Operations: {magenta_}{operation_count}{nc_}.')
             else:
                 if operation_count <= POINT_DICT[category]['pts'][0]:
-                    print(f'{GREEN}OK{NC} - Operations: {MAGENTA}{operation_count}{NC}.')
+                    print(f'{green_}OK{nc_} - Operations: {magenta_}{operation_count}{nc_}.')
                 else:
                     index = 0
                     for i in range(len(POINT_DICT[category]['pts'])):
@@ -268,8 +275,8 @@ def do_test(binary, set_, errordisplay, errorabort, pointsfatal):
                     points = len(POINT_DICT[category]['pts']) - index
                     if operation_count > POINT_DICT[category]['pts'][len(POINT_DICT[category]['pts']) - 1]:
                         points = 0
-                    print(f'{YELLOW}OK{NC} - Operations: {MAGENTA}{operation_count}{NC}. Points: '
-                          f'{MAGENTA}{points}{NC}.')
+                    print(f'{yellow_}OK{nc_} - Operations: {magenta_}{operation_count}{nc_}. Points: '
+                          f'{magenta_}{points}{nc_}.')
 
                     if errordisplay or pointsfatal:
                         print(set_)
@@ -296,6 +303,7 @@ def main():
                         help="Biggest possible number in a set.")
     parser.add_argument("-b", "--binary", type=my_bin_type, nargs="?", const="push_swap",
                         default="push_swap", help="Location of the tested binary. Default: \"push_swap\".")
+    parser.add_argument("--disablecolor", action="store_true", help="Disable colors in the output.")
     args = parser.parse_args()
 
     if args.set is None:
@@ -305,11 +313,12 @@ def main():
 
     if args.set is not None:
         print("testing using given set...")
-        do_test(args.binary, args.set, args.errordisplay, args.errorabort, args.pointsfatal)
+        do_test(args.binary, args.set, args.errordisplay, args.errorabort, args.pointsfatal, args.disablecolor)
     else:
         nam = int(args.numamount)
         tam = int(args.testamount)
-        print(f"testing using {tam} tests of random sets of {nam} numbers ranging between {args.minnum} and {args.maxnum}...")
+        print(f"testing using {tam} tests of random sets of {nam} numbers ranging between {args.minnum} "
+              f"and {args.maxnum}...")
         for i in range(tam):
             # https://stackoverflow.com/a/22842411
             num_lst = None
@@ -317,7 +326,8 @@ def main():
                 num_lst = random.sample(range(int(args.minnum), int(args.maxnum)), int(args.numamount))
             except ValueError:
                 exit("Can not build a set of numbers large enough within the given range")
-            do_test(args.binary, ' '.join(map(str, num_lst)), args.errordisplay, args.errorabort, args.pointsfatal)
+            do_test(args.binary, ' '.join(map(str, num_lst)), args.errordisplay, args.errorabort, args.pointsfatal,
+                    args.disablecolor)
 
 
 

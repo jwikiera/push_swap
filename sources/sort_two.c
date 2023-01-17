@@ -12,8 +12,9 @@
 
 #include "push_swap.h"
 
-void	sort_two(const int *arr)
+void	sort_two(int *arr)
 {
 	if (arr[1] < arr[0])
 		ft_putstr_fd("sa\n", 1);
+	free(arr);
 }
