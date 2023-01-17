@@ -222,11 +222,12 @@ def check_sort(set_, instructions):
 
 
 # test a given set
-def do_test(binary, set_):
+def do_test(binary, set_, errordisplay, errorabort, pointsfatal):
     result = subprocess.run([os.path.abspath(binary), set_], stdout=subprocess.PIPE)
     res = None
     if result.stderr is not None:
-        print(f'{RED}{result.stderr}{NC}')
+        pass
+        # print(f'{RED}{result.stderr}{NC}')
     elif result.stdout is not None:
         res = result.stdout.decode("utf-8").strip()
         instructions = res.split('\n')
@@ -248,6 +249,11 @@ def do_test(binary, set_):
                     print(f'{RED}KO{NC} - Operations: {MAGENTA}{operation_count}{NC} (Maximum operations for category '
                           f'{CYAN}{category}{NC} allowed is {CYAN}'
                           f'{POINT_DICT[category]["max"]}{NC}.')
+                    if errordisplay or errorabort:
+                        print(set_)
+                    if errorabort:
+                        print("Aborting, --errorabort was specified.")
+                        exit(0)
                 else:
                     print(f'{GREEN}OK{NC} - Operations: {MAGENTA}{operation_count}{NC}.')
             else:
@@ -264,6 +270,13 @@ def do_test(binary, set_):
                         points = 0
                     print(f'{YELLOW}OK{NC} - Operations: {MAGENTA}{operation_count}{NC}. Points: '
                           f'{MAGENTA}{points}{NC}.')
+
+                    if errordisplay or pointsfatal:
+                        print(set_)
+                    if pointsfatal:
+                        print("Aborting, --pointsfatal was specified.")
+                        exit(0)
+
             # print(f'number of operations: {operation_count}')
         else:
             print(f'{RED}KO{NC}')
@@ -273,6 +286,9 @@ def main():
     parser.add_argument("-s", "--set", type=set_type, nargs="?", help="Set of numbers to test.")
     parser.add_argument("-n", "--numamount", type=my_int_type, help="Amount of numbers in test sets.")
     parser.add_argument("-t", "--testamount", type=my_int_type, help="Amount of tests.")
+    parser.add_argument("-e", "--errordisplay", action="store_true", help="Display erroring sets.")
+    parser.add_argument("-r", "--errorabort", action="store_true", help="Abort testing when an error has occured.")
+    parser.add_argument("-f", "--pointsfatal", action="store_true", help="Not achieving all points is a fatal error.")
     parser.add_argument("-i", "--minnum", type=my_int_type_2, nargs="?", const=-15000, default=-15000,
                         help="Smallest possible number in a set.")
     parser.add_argument("-a", "--maxnum", type=my_int_type_2, nargs="?", const=15000, default=15000,
@@ -288,7 +304,7 @@ def main():
 
     if args.set is not None:
         print("testing using given set...")
-        do_test(args.binary, args.set)
+        do_test(args.binary, args.set, args.errordisplay, args.errorabort, args.pointsfatal)
     else:
         nam = int(args.numamount)
         tam = int(args.testamount)
@@ -300,7 +316,7 @@ def main():
                 num_lst = random.sample(range(int(args.minnum), int(args.maxnum)), int(args.numamount))
             except ValueError:
                 exit("Can not build a set of numbers large enough within the given range")
-            do_test(args.binary, ' '.join(map(str, num_lst)))
+            do_test(args.binary, ' '.join(map(str, num_lst)), args.errordisplay, args.errorabort, args.pointsfatal)
 
 
 
