@@ -281,6 +281,7 @@ def do_test(binary, set_, errordisplay, errorabort, pointsfatal):
         else:
             print(f'{RED}KO{NC}')
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--set", type=set_type, nargs="?", help="Set of numbers to test.")
@@ -308,7 +309,7 @@ def main():
     else:
         nam = int(args.numamount)
         tam = int(args.testamount)
-        print(f"testing using {tam} tests of random sets of {nam} numbers...")
+        print(f"testing using {tam} tests of random sets of {nam} numbers ranging between {args.minnum} and {args.maxnum}...")
         for i in range(tam):
             # https://stackoverflow.com/a/22842411
             num_lst = None

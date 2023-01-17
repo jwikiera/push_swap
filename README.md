@@ -8,6 +8,10 @@ The bonus for this assignment is creating a second program (`checker`) that chec
 
 I have also written a more advanced tool for testing, in Python (`tester.py`) which, besides having the same abilities as `checker` does, can also generate arbitrary amounts of tests. Its `argparse` interface includes all necessary details.
 
+Example usage of the Python checker: `./tester.py --testamount 100 --numamount 5 --minnum 1 --maxnum 10 --errorabort`: 
+performs 100 tests with random sets of 5 numbers, the numbers ranging from 1 to 10 and aborts if an error occurs, displaying
+the erroring set.
+
 Here are the instructions used for sorting:
 
 - `sa` (swap a): Swap the first 2 elements at the top of stack a.

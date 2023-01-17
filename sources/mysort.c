@@ -71,7 +71,7 @@ void	ps_mysort(int *arr, int len)
 		op_s(stack_a, 1);
 	while (stack_b->top != -1)
 		op_p(stack_b, stack_a, 1);
-	print_stack(stack_a);
+	//print_stack(stack_a);
 	//print_stack(stack_b);
 	free_stack(stack_a);
 	free_stack(stack_b);
