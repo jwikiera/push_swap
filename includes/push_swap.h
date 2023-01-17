@@ -30,7 +30,7 @@ int		*one_arg_to_intarray(char **split_res, size_t word_count);
 void	sort_two(const int *arr);
 void	sort_three(const int *arr);
 void	sort_five(int *arr, int len);
-void	sort_hundred(const int *arr, int len);
+void	sort_hundred(int *arr, int len);
 void	sort_fivehundred(const int *arr, int len);
 void	ps_mysort(int *arr, int len);
 int		*intarr_bubblesort(const int *arr, int len);

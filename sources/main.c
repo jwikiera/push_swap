@@ -38,9 +38,8 @@ int	main(int argc, char *argv[])
 	if (argc == 2)
 		argc = count_words(argv[1], ' ') + 1;
 	//ft_printf("arg amount: %d\n", argc);
-	if (argc == 2)
+	if (argc == 1 || argc == 2)
 	{
-		ft_printf("exiting\n");
 		free(array);
 		exit(0);
 	}
