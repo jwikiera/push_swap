@@ -13,3 +13,6 @@ push_swap
 artix_pull
 artix_push
 *.DS_Store
+venv
+venv/
+venv/*
