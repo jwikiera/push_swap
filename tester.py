@@ -300,6 +300,7 @@ def main():
                 num_lst = random.sample(range(int(args.minnum), int(args.maxnum)), int(args.numamount))
             except ValueError:
                 exit("Can not build a set of numbers large enough within the given range")
+            do_test(args.binary, ' '.join(map(str, num_lst)))
 
 
 
