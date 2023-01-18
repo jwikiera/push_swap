@@ -23,10 +23,19 @@
     - 5 points for less than 5500 actions
 */
 
+void	delete_node(void *content)
+{
+	free(content);
+}
+
 int	main(int argc, char *argv[])
 {
-	int	*array;
+	int		*array;
+	t_list	*op_lst;
+	t_list	*lst_ptr;
 
+	op_lst = NULL;
+	//ft_printf("pivot is %d\n", PIVOT);
 	if (argc < 2)
 		exit(0);
 	if (!chk_args(argc, argv))
@@ -48,11 +57,19 @@ int	main(int argc, char *argv[])
 	else if (argc == 4)
 		sort_three(array);
 	else if (argc < 7)
-		sort_five(array, argc - 1);
+		sort_five(array, argc - 1, &op_lst);
 	else if (argc < 102)
-		sort_hundred(array, argc - 1);
+		ps_bigsort(array, argc - 1, &op_lst);
+		//sort_hundred(array, argc - 1);
 	else
 		sort_fivehundred(array, argc - 1);
 	//free(array);
+	lst_ptr = op_lst;
+	while(lst_ptr != NULL)
+	{
+		ft_printf("%s", lst_ptr->content);
+		lst_ptr = lst_ptr->next;
+	}
+	ft_lstclear(&op_lst, delete_node);
 	return (0);
 }

@@ -16,8 +16,14 @@ else
   OS_FLAG				:= -D OSX
 endif
 
+PIVOT_PERCENTAGE_FLAG	:=
+ifdef pivot
+	# echo "pivot is set"
+	PIVOT_PERCENTAGE_FLAG	:= -D PIVOT=$(pivot)
+endif
+
 CC						:= cc
-CFLAGS					:= -Wall -Wextra -Werror -pedantic -O3 -fno-omit-frame-pointer -ggdb -O0 -fstack-protector-all $(FSANITIZE) $(OS_FLAG)
+CFLAGS					:= -Wall -Wextra -Werror -pedantic -O3 -fno-omit-frame-pointer -ggdb -O0 -fstack-protector-all $(FSANITIZE) $(OS_FLAG) $(PIVOT_PERCENTAGE_FLAG)
 RM						:= rm -f
 
 LIB_DIRECTORY			:= ./libs/
@@ -46,12 +52,14 @@ SOURCES_LIST			:= main.c\
 							sort_hundred.c\
 							sort_fivehundred.c\
 							mysort.c\
+							big_sort.c\
 							intarr_bubblesort.c\
 							stack_operations.c\
 							stack_operations2.c\
 							stack_init.c\
 							array_shifts.c\
-							ps_print_util.c
+							ps_print_util.c\
+							build_instruction.c
 SOURCES					:= $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 HEADER_LIST				:= push_swap.h
 HEADER_FILES			:= $(addprefix $(INCLUDE_DIR), $(HEADER_LIST))
@@ -91,6 +99,12 @@ clean:
 	@echo "$(NAME): $(RED)$(OBJECTS_DIRECTORY) was deleted$(RESET)"
 	@echo "$(NAME): $(RED)object files were deleted$(RESET)"
 
+clean_ps:
+	@rm -rf $(OBJECTS_DIRECTORY)
+	@rm -rf *.dSYM
+	@echo "$(NAME): $(RED)$(OBJECTS_DIRECTORY) was deleted$(RESET)"
+	@echo "$(NAME): $(RED)object files were deleted$(RESET)"
+
 fclean: clean
 	@$(MAKE) -sC $(LIBFT_DIRECTORY) clean
 	@$(MAKE) -sC $(LIBPRINTF_DIRECTORY) clean
@@ -107,6 +121,8 @@ docker_clean:
 	docker system prune -a --volumes
 
 re: fclean all
+
+re_ps: clean_ps all
 
 norm:
 	norminette includes/ sources/ libs/libft/ libs/libprintf/

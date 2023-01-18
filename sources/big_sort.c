@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mysort.c                                           :+:      :+:    :+:   */
+/*   big_sort.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -22,7 +22,7 @@ static int	indexof_target(t_stack *stack, int target)
 	return (index);
 }
 
-void	ps_mysort(int *arr, int len, t_list **op_lst)
+void	ps_bigsort(int *arr, int len, t_list **op_lst)
 {
 	int		*sorted_array;
 	t_stack	*stack_a;

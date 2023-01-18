@@ -12,16 +12,14 @@
 
 #include "push_swap.h"
 
-void	op_rr(t_stack *stack, int print)
+void	op_rr(t_stack *stack, t_list **op_lst)
 {
-	int	swp;
+	int		swp;
+	t_list	*node;
 
-	if (print)
-	{
-		ft_putstr_fd("rr", 1);
-		ft_putchar_fd(stack->type, 1);
-		ft_putchar_fd('\n', 1);
-	}
+	node = build_instruction('r', 'r', stack->type);
+	if (node)
+		ft_lstadd_back(op_lst, node);
 	if (stack->top == -1)
 		return ;
 	swp = stack->arr[stack->size - 1];

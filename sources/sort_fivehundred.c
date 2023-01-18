@@ -12,9 +12,7 @@
 
 #include "push_swap.h"
 
-void	sort_fivehundred(const int *arr, int len)
+void	sort_fivehundred(int *arr, int len)
 {
-	(void) len;
-	if (arr[1] < arr[0])
-		ft_putstr_fd("sa\n", 1);
+	ps_bigsort(arr, len, NULL);
 }

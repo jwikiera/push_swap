@@ -14,5 +14,5 @@
 
 void	sort_hundred(int *arr, int len)
 {
-	ps_mysort(arr, len);
+	ps_bigsort(arr, len, NULL);
 }

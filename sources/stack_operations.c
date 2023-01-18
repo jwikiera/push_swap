@@ -12,16 +12,14 @@
 
 #include "push_swap.h"
 
-void	op_s(t_stack *stack, int print)
+void	op_s(t_stack *stack, t_list **op_lst)
 {
 	int	swp;
+	t_list	*node;
 
-	if (print)
-	{
-		ft_putchar_fd('s', 1);
-		ft_putchar_fd(stack->type, 1);
-		ft_putchar_fd('\n', 1);
-	}
+	node = build_instruction('s',  stack->type, 0);
+	if (node)
+		ft_lstadd_back(op_lst, node);
 	if (stack->top == -1 || stack->top > stack->size - 2)
 		return ;
 	swp = stack->arr[stack->top];
@@ -37,14 +35,13 @@ void	op_ss(t_stack *stack_a, t_stack *stack_b, int print)
 	op_s(stack_b, 0);
 }
 
-void	op_p(t_stack *stack_src, t_stack *stack_dst, int print)
+void	op_p(t_stack *stack_src, t_stack *stack_dst, t_list **op_lst)
 {
-	if (print)
-	{
-		ft_putchar_fd('p', 1);
-		ft_putchar_fd(stack_dst->type, 1);
-		ft_putchar_fd('\n', 1);
-	}
+	t_list	*node;
+
+	node = build_instruction('p',  stack_dst->type, 0);
+	if (node)
+		ft_lstadd_back(op_lst, node);
 	if (stack_src->top == -1)
 		return ;
 	if (stack_dst->top == -1)
@@ -61,16 +58,14 @@ void	op_p(t_stack *stack_src, t_stack *stack_dst, int print)
 		stack_src->top ++;
 }
 
-void	op_r(t_stack *stack, int print)
+void	op_r(t_stack *stack, t_list **op_lst)
 {
-	int	swp;
+	int		swp;
+	t_list	*node;
 
-	if (print)
-	{
-		ft_putchar_fd('r', 1);
-		ft_putchar_fd(stack->type, 1);
-		ft_putchar_fd('\n', 1);
-	}
+	node = build_instruction('r',  stack->type, 0);
+	if (node)
+		ft_lstadd_back(op_lst, node);
 	if (stack->top == -1)
 		return ;
 	swp = stack->arr[stack->top];

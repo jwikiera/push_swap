@@ -3,6 +3,7 @@ import argparse
 import os
 import random
 import subprocess
+from typing import List
 
 
 # consts
@@ -42,7 +43,7 @@ class Stack:
 
 
 # custom argpparse number type so that it raises an exception if an int arg is smaller than 1 or bigger than INT_MAX
-def my_int_type(x):
+def my_int_type(x: str):
     try:
         x = int(x)
     except ValueError:
@@ -54,7 +55,7 @@ def my_int_type(x):
 
 # custom argpparse number type so that it raises an exception if an int arg is smaller than INT_MIN or bigger than
 # INT_MAX
-def my_int_type_2(x):
+def my_int_type_2(x: str):
     try:
         x = int(x)
     except ValueError:
@@ -66,7 +67,7 @@ def my_int_type_2(x):
 
 
 # custom argpparse type representing a set
-def set_type(x):
+def set_type(x: str):
     int_lst = []
     lst = str(x).split()
     for elem in lst:
@@ -84,7 +85,7 @@ def set_type(x):
 
 
 # custom argparse type that checks if a specified file does exist and can be executed
-def my_bin_type(x):
+def my_bin_type(x: str):
     if not os.path.exists(x) or not os.path.isfile(x):
         raise argparse.ArgumentTypeError(f"Binary '{x}' not found.")
     if not os.access(x, os.X_OK):
@@ -93,7 +94,7 @@ def my_bin_type(x):
 
 
 # shift an array to the right by one slot
-def shift_down(arr):
+def shift_down(arr: List):
     swp = [0, 0]
     i = 0
     swp_index = 0
@@ -105,7 +106,7 @@ def shift_down(arr):
 
 
 # shift array to the left by one slot
-def shift_up(arr):
+def shift_up(arr: List):
     swp = [0, 0]
     i = len(arr) - 1
     swp_index = 0
@@ -118,7 +119,7 @@ def shift_up(arr):
 
 # stack operations
 # swap
-def op_s(stack):
+def op_s(stack: Stack):
     if stack.top == -1 or stack.top > stack.size - 2:
         return
     swp = stack.arr[stack.top]
@@ -127,13 +128,13 @@ def op_s(stack):
 
 
 # swap two stacks at the same time
-def op_ss(stack_a, stack_b):
+def op_ss(stack_a: Stack, stack_b: Stack):
     op_s(stack_a)
     op_s(stack_b)
 
 
 # push
-def op_p(stack_src, stack_dst):
+def op_p(stack_src: Stack, stack_dst: Stack):
     if stack_src.top == -1:
         return
     if stack_dst.top == -1:
@@ -151,7 +152,7 @@ def op_p(stack_src, stack_dst):
 
 
 # rotate
-def op_r(stack):
+def op_r(stack: Stack):
     if stack.top == -1:
         return
     swp = stack.arr[stack.top]
@@ -160,13 +161,13 @@ def op_r(stack):
 
 
 # rotate two stacks
-def op_rarb(stack_a, stack_b):
+def op_rarb(stack_a: Stack, stack_b: Stack):
     op_r(stack_a)
     op_r(stack_b)
 
 
 # reverse rotate
-def op_rr(stack):
+def op_rr(stack: Stack):
     if stack.top == -1:
         return
     swp = stack.arr[stack.size - 1]
@@ -175,12 +176,12 @@ def op_rr(stack):
 
 
 # reverse rotate two stacks
-def op_rrr(stack_a, stack_b):
+def op_rrr(stack_a: Stack, stack_b: Stack):
     op_rr(stack_a)
     op_rr(stack_b)
 
 
-def check_sort(set_, instructions):
+def check_sort(set_: str, instructions: List[str]):
     set_ = set_.strip()
     nums_str = set_.split()
     nums = []
@@ -222,15 +223,15 @@ def check_sort(set_, instructions):
 
 
 # test a given set
-def do_test(binary, set_, errordisplay, errorabort, pointsfatal, disablecolor):
-    red_ = RED if not disablecolor else ''
-    yellow_ = YELLOW if not disablecolor else ''
-    cyan_ = CYAN if not disablecolor else ''
-    magenta_ = MAGENTA if not disablecolor else ''
-    green_ = GREEN if not disablecolor else ''
-    nc_ = NC if not disablecolor else ''
+def do_test(args, set_: str):
+    red_ = RED if not args.disablecolor else ''
+    yellow_ = YELLOW if not args.disablecolor else ''
+    cyan_ = CYAN if not args.disablecolor else ''
+    magenta_ = MAGENTA if not args.disablecolor else ''
+    green_ = GREEN if not args.disablecolor else ''
+    nc_ = NC if not args.disablecolor else ''
 
-    result = subprocess.run([os.path.abspath(binary), set_], stdout=subprocess.PIPE)
+    result = subprocess.run([os.path.abspath(args.binary), set_], stdout=subprocess.PIPE)
     res = None
     if result.stderr is not None:
         pass
@@ -253,12 +254,12 @@ def do_test(binary, set_, errordisplay, errorabort, pointsfatal, disablecolor):
             # print(f'Category: {category}')
             if POINT_DICT[category]['max'] != -1:
                 if operation_count > POINT_DICT[category]['max']:
-                    print(f'{red_}KO{nc_} - Operations: {magenta_}{operation_count}{nc_} (Maximum operations for category '
-                          f'{cyan_}{category}{nc_} allowed is {cyan_}'
+                    print(f'{red_}KO{nc_} - Operations: {magenta_}{operation_count}{nc_} '
+                          f'(Maximum operations for category {cyan_}{category}{nc_} allowed is {cyan_}'
                           f'{POINT_DICT[category]["max"]}{nc_}.')
-                    if errordisplay or errorabort:
+                    if args.errordisplay or args.errorabort:
                         print(set_)
-                    if errorabort:
+                    if args.errorabort:
                         print("Aborting, --errorabort was specified.")
                         exit(0)
                 else:
@@ -278,9 +279,9 @@ def do_test(binary, set_, errordisplay, errorabort, pointsfatal, disablecolor):
                     print(f'{yellow_}OK{nc_} - Operations: {magenta_}{operation_count}{nc_}. Points: '
                           f'{magenta_}{points}{nc_}.')
 
-                    if errordisplay or pointsfatal:
+                    if args.errordisplay or args.pointsfatal:
                         print(set_)
-                    if pointsfatal:
+                    if args.pointsfatal:
                         print("Aborting, --pointsfatal was specified.")
                         exit(0)
 
@@ -304,6 +305,7 @@ def main():
     parser.add_argument("-b", "--binary", type=my_bin_type, nargs="?", const="push_swap",
                         default="push_swap", help="Location of the tested binary. Default: \"push_swap\".")
     parser.add_argument("--disablecolor", action="store_true", help="Disable colors in the output.")
+    parser.add_argument("--debug", action="store_true", help="Shows set before feeding it into the sorter.")
     args = parser.parse_args()
 
     if args.set is None:
@@ -313,7 +315,7 @@ def main():
 
     if args.set is not None:
         print("testing using given set...")
-        do_test(args.binary, args.set, args.errordisplay, args.errorabort, args.pointsfatal, args.disablecolor)
+        do_test(args, args.set)
     else:
         nam = int(args.numamount)
         tam = int(args.testamount)
@@ -326,9 +328,9 @@ def main():
                 num_lst = random.sample(range(int(args.minnum), int(args.maxnum)), int(args.numamount))
             except ValueError:
                 exit("Can not build a set of numbers large enough within the given range")
-            do_test(args.binary, ' '.join(map(str, num_lst)), args.errordisplay, args.errorabort, args.pointsfatal,
-                    args.disablecolor)
-
+            if args.debug:
+                print(f'DEBUG: {" ".join(map(str, num_lst))}')
+            do_test(args, ' '.join(map(str, num_lst)))
 
 
 if __name__ == "__main__":
