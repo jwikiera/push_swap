@@ -288,6 +288,12 @@ def do_test(args, set_: str):
             # print(f'number of operations: {operation_count}')
         else:
             print(f'{RED}KO{NC}')
+            if args.errordisplay or args.pointsfatal:
+                print(set_)
+            elif args.errorabort:
+                print(set_)
+                print("Aborting, --errorabort was specified.")
+                exit(0)
 
 
 def main():

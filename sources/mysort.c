@@ -47,7 +47,6 @@ void	ps_mysort(int *arr, int len, t_list **op_lst)
 		free(stack_b);
 		return ;
 	}
-	//ft_printf("sorted\n");
 	sort_index = 0;
 	while (stack_a->top != stack_a->size - 2)
 	{

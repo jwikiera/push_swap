@@ -62,7 +62,7 @@ int	main(int argc, char *argv[])
 		ps_bigsort(array, argc - 1, &op_lst);
 		//sort_hundred(array, argc - 1);
 	else
-		sort_fivehundred(array, argc - 1);
+		ps_bigsort(array, argc - 1, &op_lst);
 	//free(array);
 	lst_ptr = op_lst;
 	while(lst_ptr != NULL)
