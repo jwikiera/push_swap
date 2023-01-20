@@ -138,7 +138,7 @@ void	ps_bigsort(int *arr, int len, t_list **op_lst)
 	cache_counter = 0;
 	while (stack_b->top != -1)
 	{
-		if (stack_b->arr[stack_b->top] == sorted_array[sort_index - (cache_counter + 1)])
+		if (sort_index != stack_b->size - (cache_counter) && sort_index > (cache_counter) && stack_b->arr[stack_b->top] == sorted_array[sort_index - (cache_counter + 1)])
 		{
 			op_p(stack_b, stack_a, op_lst);
 			//op_r(stack_a, op_lst);
