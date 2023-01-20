@@ -87,6 +87,7 @@ int			ft_isspace(char c);
 long		ft_atoi_l(const char *nptr);
 int			ft_get_str_sign(const char *str);
 void		ft_free_split(char **split_res, size_t size);
+int			ft_index_of_int(const int *arr, int size, int target);
 
 /* math */
 int			ft_min_int(int a, int b);

@@ -93,7 +93,8 @@ SRCS_OWN_LIST		:= ft_str_starts_ends_with.c\
 						ft_isspace.c\
 						ft_atoi_l.c\
 						ft_get_str_sign.c\
-						ft_free_split.c
+						ft_free_split.c\
+						ft_index_of_int.c
 OBJS_OWN_LIST		:= $(patsubst %.c, %.o, $(SRCS_OWN_LIST))
 OBJS_OWN			:= $(addprefix $(OBJECTS_DIRECTORY), $(OBJS_OWN_LIST))
 

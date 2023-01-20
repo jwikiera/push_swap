@@ -3,13 +3,13 @@ NAME					:= push_swap
 UNAME_S					:= $(shell uname -s)
 
 ifeq ($(UNAME_S),Linux)
-  FSANITIZE				:= -fsanitize=address -fsanitize=leak
+  FSANITIZELEAK			:= -fsanitize=leak
   FRAMEWORK				:=
   LINUX_LIBS			:=
   LINUX_INCLUDES		:= -I/usr/include
   OS_FLAG				:= -D LINUX
 else
-  FSANITIZE				:=
+  FSANITIZELEAK			:=
   FRAMEWORK				:=
   LINUX_LIBS			:=
   LINUX_INCLUDES		:=
@@ -22,8 +22,14 @@ ifdef pivot
 	PIVOT_PERCENTAGE_FLAG	:= -D PIVOT=$(pivot)
 endif
 
+ifdef release
+	DEVFLAGS			:=
+else
+	DEVFLAGS			:= -fno-omit-frame-pointer -ggdb -O0 -fstack-protector-all -fsanitize=address $(FSANITIZELEAK)
+endif
+
 CC						:= cc
-CFLAGS					:= -Wall -Wextra -Werror -pedantic -O3 -fno-omit-frame-pointer -ggdb -O0 -fstack-protector-all $(FSANITIZE) $(OS_FLAG) $(PIVOT_PERCENTAGE_FLAG)
+CFLAGS					:= -Wall -Wextra -Werror -pedantic -O3 $(DEVFLAGS) $(OS_FLAG) $(PIVOT_PERCENTAGE_FLAG)
 RM						:= rm -f
 
 LIB_DIRECTORY			:= ./libs/

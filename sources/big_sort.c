@@ -106,13 +106,20 @@ void	ps_bigsort(int *arr, int len, t_list **op_lst)
 		}
 		int	pivot = int_at_percent_in_arr(sorted_array, stack_a->size - stack_a->top, PIVOT);
 		int	pivot_b = int_at_percent_in_arr(sorted_array, stack_a->size - stack_a->top, (int)((double) PIVOT / 100.0 * (double) PIVOT));
+		if (ft_index_of_int(sorted_array, stack_a->size - stack_a->top, pivot) == 0 && ((stack_a->size - stack_a->top) > 1))
+			pivot = sorted_array[1];
+		if (ft_index_of_int(sorted_array, stack_a->size - stack_a->top, pivot_b) == 0  && ((stack_a->size - stack_a->top) > 1))
+			pivot_b = sorted_array[1];
+		//TODO: set a minimum stack size
+		//if (stack_a->size - stack_a->size > 20 && indexof_target(stack_a, pivot) < 20)
+		//	pivot =
 
 		while (stack_has_smaller_num_than(stack_a, pivot))
 		{
 			int	smaller = get_first_num_smaller_than_target(stack_a, pivot);
 			bring_num_to_top(stack_a, smaller, op_lst);
 			op_p(stack_a, stack_b, op_lst);
-			if (stack_b->arr[stack_b->top] < pivot_b)
+			if (stack_b->arr[stack_b->top] < pivot_b && stack_b->top < stack_b->size - 1)
 				op_r(stack_b, op_lst);
 		}
 		if (stack_a->top == stack_a->size - 1)

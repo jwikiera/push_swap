@@ -33,7 +33,7 @@ POINT_DICT = {
 
 # stack class, same as in the C version (keeping a size of the array is not pythonic but I can just copy code)
 class Stack:
-    def __init__(self, arr, size, empty):
+    def __init__(self, arr: List[int], size: int, empty: bool):
         self.arr = arr
         self.size = size
         if empty:
@@ -41,6 +41,11 @@ class Stack:
         else:
             self.top = 0
 
+
+class TestResult:
+    def __init__(self, succeeded: bool, op_count: int):
+        self.succeeded = succeeded
+        self.op_count = op_count
 
 # custom argpparse number type so that it raises an exception if an int arg is smaller than 1 or bigger than INT_MAX
 def my_int_type(x: str):
@@ -222,6 +227,31 @@ def check_sort(set_: str, instructions: List[str]):
     return True
 
 
+def check_optimization(instructions: List[str], color: bool, short: bool):
+    optimization_count = 0
+    for i in range(len(instructions) - 1):
+        if instructions[i] == 'sa' and instructions[i + 1] == 'sb' or instructions[i] == 'sb'\
+                and instructions[i + 1] == 'sa':
+            if not short:
+                print(f"Optimization at instruction {i} possible (contraction to ss).")
+            optimization_count += 1
+        elif instructions[i] == 'ra' and instructions[i + 1] == 'rb' or instructions[i] == 'rb'\
+                and instructions[i + 1] == 'ra':
+            if not short:
+                print(f"Optimization at instruction {i} possible (contraction to rr).")
+            optimization_count += 1
+        elif instructions[i] == 'rra' and instructions[i + 1] == 'rrb' or instructions[i] == 'rrb'\
+                and instructions[i + 1] == 'rra':
+            if not short:
+                print(f"Optimization at instruction {i} possible (contraction to rrr).")
+            optimization_count += 1
+    if optimization_count > 0:
+        if color:
+            print(f"A total of {GREEN}{optimization_count}{NC} optimizations are possible.")
+        else:
+            print(f"A total of {optimization_count} optimizations are possible.")
+
+
 # test a given set
 def do_test(args, set_: str):
     red_ = RED if not args.disablecolor else ''
@@ -233,6 +263,7 @@ def do_test(args, set_: str):
 
     result = subprocess.run([os.path.abspath(args.binary), set_], stdout=subprocess.PIPE)
     res = None
+    operation_count = -1
     if result.stderr is not None:
         pass
         # print(f'{RED}{result.stderr}{NC}')
@@ -241,6 +272,12 @@ def do_test(args, set_: str):
         instructions = res.split('\n')
         # print(res)
         # print(check_sort(set_, instructions))
+        if args.showops:
+            print(' '.join(instructions))
+        elif args.showopsnl:
+            print('\n'.join(instructions))
+        if args.checkoptimize or args.checkoptshort:
+            check_optimization(instructions, not args.disablecolor, args.checkoptshort)
         if check_sort(set_, instructions):
             operation_count = len(instructions)
             categories = list(POINT_DICT.keys())
@@ -260,8 +297,7 @@ def do_test(args, set_: str):
                     if args.errordisplay or args.errorabort:
                         print(set_)
                     if args.errorabort:
-                        print("Aborting, --errorabort was specified.")
-                        exit(0)
+                        return TestResult(False, -1)
                 else:
                     print(f'{green_}OK{nc_} - Operations: {magenta_}{operation_count}{nc_}.')
             else:
@@ -282,18 +318,13 @@ def do_test(args, set_: str):
                     if args.errordisplay or args.pointsfatal:
                         print(set_)
                     if args.pointsfatal:
-                        print("Aborting, --pointsfatal was specified.")
-                        exit(0)
-
-            # print(f'number of operations: {operation_count}')
+                        return TestResult(False, -1)
         else:
             print(f'{RED}KO{NC}')
-            if args.errordisplay or args.pointsfatal:
+            if args.errordisplay or args.pointsfatal or args.errorabort:
                 print(set_)
-            elif args.errorabort:
-                print(set_)
-                print("Aborting, --errorabort was specified.")
-                exit(0)
+            return TestResult(False, -1)
+        return TestResult(True, operation_count)
 
 
 def main():
@@ -301,6 +332,11 @@ def main():
     parser.add_argument("-s", "--set", type=set_type, nargs="?", help="Set of numbers to test.")
     parser.add_argument("-n", "--numamount", type=my_int_type, help="Amount of numbers in test sets.")
     parser.add_argument("-t", "--testamount", type=my_int_type, help="Amount of tests.")
+    parser.add_argument("--showops", action="store_true", help="Display operations done by the sorter.")
+    parser.add_argument("--showopsnl", action="store_true", help="Display operations done by the sorter, each on a "
+                                                                 "new line.")
+    parser.add_argument("--checkoptimize", action="store_true", help="Warn if some operations can be contracted.")
+    parser.add_argument("--checkoptshort", action="store_true", help="Only show how many contractions can be made.")
     parser.add_argument("-e", "--errordisplay", action="store_true", help="Display erroring sets.")
     parser.add_argument("-r", "--errorabort", action="store_true", help="Abort testing when an error has occured.")
     parser.add_argument("-f", "--pointsfatal", action="store_true", help="Not achieving all points is a fatal error.")
@@ -327,6 +363,7 @@ def main():
         tam = int(args.testamount)
         print(f"testing using {tam} tests of random sets of {nam} numbers ranging between {args.minnum} "
               f"and {args.maxnum}...")
+        operations_total: int = 0
         for i in range(tam):
             # https://stackoverflow.com/a/22842411
             num_lst = None
@@ -336,8 +373,20 @@ def main():
                 exit("Can not build a set of numbers large enough within the given range")
             if args.debug:
                 print(f'DEBUG: {" ".join(map(str, num_lst))}')
-            do_test(args, ' '.join(map(str, num_lst)))
-
+            result: TestResult = do_test(args, ' '.join(map(str, num_lst)))
+            if not result.succeeded:
+                if args.errorabort:
+                    print("Aborting, --errorabort was specified.")
+                    exit(0)
+                if args.pointsfatal:
+                    print("Aborting, --pointsfatal was specified.")
+                    exit(0)
+            else:
+                operations_total += result.op_count
+        if not args.disablecolor:
+            print(f'Average operation count: {MAGENTA}{operations_total // tam}{NC}')
+        else:
+            print(f'Average operation count: {operations_total // tam}')
 
 if __name__ == "__main__":
     main()
