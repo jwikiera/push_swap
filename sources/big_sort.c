@@ -76,12 +76,32 @@ int	get_first_num_smaller_than_target(t_stack *stack, int target)
 	return (0);
 }
 
-void	ps_bigsort(int *arr, int len, t_list **op_lst)
+int	get_largest_num_in_stack(t_stack *stack)
+{
+	int	i;
+	int	res;
+
+	if (stack->top == -1)
+		return (0);
+	res = stack->arr[stack->top];
+	i = stack->top + 1;
+	while (i < stack->size)
+	{
+		if (stack->arr[i] > res)
+			res = stack->arr[i];
+		i ++;
+	}
+	return (res);
+}
+
+/* void	ps_bigsort(int *arr, int len, t_list **op_lst)
 {
 	int		*sorted_array;
 	t_stack	*stack_a;
 	t_stack	*stack_b;
 	int		cache_counter;
+
+	int pivot_min = 50;
 
 	stack_a = stack_init(arr, len, 'a');
 	if (!stack_a)
@@ -110,9 +130,14 @@ void	ps_bigsort(int *arr, int len, t_list **op_lst)
 			pivot = sorted_array[1];
 		if (ft_index_of_int(sorted_array, stack_a->size - stack_a->top, pivot_b) == 0  && ((stack_a->size - stack_a->top) > 1))
 			pivot_b = sorted_array[1];
-		//TODO: set a minimum stack size
-		//if (stack_a->size - stack_a->size > 20 && indexof_target(stack_a, pivot) < 20)
-		//	pivot =
+		if (indexof_target(stack_a, pivot) < pivot_min)
+		{
+			if (stack_a->size - stack_a->top > pivot_min)
+				pivot = sorted_array[pivot_min];
+			else
+				pivot = get_largest_num_in_stack(stack_a);
+		}
+		pivot_b = pivot / 2;
 
 		while (stack_has_smaller_num_than(stack_a, pivot))
 		{
@@ -171,6 +196,135 @@ void	ps_bigsort(int *arr, int len, t_list **op_lst)
 
 	//print_stack(stack_a);
 	//print_stack(stack_b);
+
+	free_stack(stack_a);
+	free_stack(stack_b);
+	free(sorted_array);
+}
+ */
+
+int	stack_len(t_stack *stack)
+{
+	if (stack->top == -1)
+		return (0);
+	return (stack->size - stack->top);
+}
+
+int	top_val(t_stack *stack)
+{
+	if (stack_len(stack))
+		return (stack->arr[stack->top]);
+	return (0);
+}
+
+int	count_nums_below(t_stack *stack, int target)
+{
+	int	i;
+	int	count;
+
+	if (indexof_target(stack, target) == -1)
+		return (-1);
+	i = stack->top;
+	count = 0;
+	while (i < stack->size)
+	{
+		if (stack->arr[i] < target)
+			count ++;
+		i ++;
+	}
+	return (count);
+}
+
+int	get_num_with_x_below(t_stack *stack, int x)
+{
+	int	i;
+
+	i = stack->top;
+	while (i < stack->size)
+	{
+		if (count_nums_below(stack, stack->arr[i]) == x)
+			return (stack->arr[i]);
+		i ++;
+	}
+	return (0);
+}
+
+void	ps_bigsort(int *arr, int len, t_list **op_lst)
+{
+	int		*sorted_array;
+	t_stack	*stack_a;
+	t_stack	*stack_b;
+	//int		cache_counter;
+
+	int pivot_min = 20;
+
+	stack_a = stack_init(arr, len, 'a');
+	if (!stack_a)
+	{
+		free(arr);
+		return ;
+	}
+	stack_b = stack_init_empty(len, 'b');
+	if (!stack_b)
+	{
+		free(stack_a);
+		return ;
+	}
+	while (stack_len(stack_a) != 1)
+	{
+		if (pivot_min > stack_len(stack_a) - 1)
+			pivot_min = stack_len(stack_a) - 1;
+		sorted_array = intarr_bubblesort(stack_a->arr + stack_a->top, stack_a->size - stack_a->top);
+		if (sorted_array == NULL)
+		{
+			free_stack(stack_a);
+			free_stack(stack_b);
+			return ;
+		}
+
+		int	pivot_a = int_at_percent_in_arr(sorted_array, stack_a->size - stack_a->top, PIVOT);
+		int	pivot_b = int_at_percent_in_arr(sorted_array, stack_a->size - stack_a->top, (int)((double) PIVOT / 100.0 * (double) PIVOT));
+
+		//if (indexof_target(stack_a, pivot_a) < pivot_min)
+		//	pivot_a = get_num_with_x_below(stack_a, pivot_min);
+
+		while (stack_has_smaller_num_than(stack_a, pivot_a))
+		{
+			if (top_val(stack_a) < pivot_a)
+			{
+				op_p(stack_a, stack_b, op_lst);
+				while (stack_has_smaller_num_than(stack_a, pivot_a) && top_val(stack_a) > pivot_a)
+					op_r(stack_a, op_lst);
+				if (top_val(stack_b) < pivot_b)
+					op_r(stack_b, op_lst);
+			}
+			else
+				op_r(stack_a, op_lst);
+		}
+
+		free(sorted_array);
+		sorted_array = NULL;
+	}
+
+	for (int k = 0; k < stack_a->size - 1; ++k) {
+		stack_a->arr[k] = 0;
+	}
+
+	sorted_array = intarr_bubblesort(stack_b->arr, stack_b->size);
+	if (sorted_array == NULL)
+	{
+		free_stack(stack_a);
+		free_stack(stack_b);
+		return ;
+	}
+
+	int index = stack_b->size - 1;
+	while (stack_b->top != -1)
+	{
+		bring_num_to_top(stack_b, sorted_array[index], op_lst);
+		op_p(stack_b, stack_a, op_lst);
+		index --;
+	}
 
 	free_stack(stack_a);
 	free_stack(stack_b);

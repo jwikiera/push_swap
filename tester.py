@@ -224,6 +224,7 @@ def check_sort(set_: str, instructions: List[str]):
         else:
             if prev > x:
                 return False
+            prev = x
     return True
 
 
