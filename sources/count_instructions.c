@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_hundred.c                                     :+:      :+:    :+:   */
+/*   count_instructions.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,17 @@
 
 #include "push_swap.h"
 
-void	sort_hundred(int *arr, int len)
+int	count_instructions(t_list *op_lst)
 {
-	ps_bigsort(arr, len, NULL);
+	int		res;
+	t_list	*node;
+
+	res = 0;
+	node = op_lst;
+	while (node)
+	{
+		res ++;
+		node = node->next;
+	}
+	return (res);
 }

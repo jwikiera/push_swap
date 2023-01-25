@@ -21,6 +21,21 @@ ifdef pivot
 	# echo "pivot is set"
 	PIVOT_PERCENTAGE_FLAG	:= -D PIVOT=$(pivot)
 endif
+PIVOTB1_PERCENTAGE_FLAG	:=
+ifdef pivotb1
+	# echo "pivot is set"
+	PIVOTB1_PERCENTAGE_FLAG	:= -D PIVOTB1=$(pivotb1)
+endif
+PIVOTB2_PERCENTAGE_FLAG	:=
+ifdef pivotb2
+	# echo "pivot is set"
+	PIVOTB2_PERCENTAGE_FLAG	:= -D PIVOTB2=$(pivotb2)
+endif
+MIN_CHUNK_FLAG			:=
+ifdef minchunk
+	# echo "pivot is set"
+	MIN_CHUNK_FLAG		:= -D MIN_CHUNK=$(minchunk)
+endif
 
 ifdef release
 	DEVFLAGS			:=
@@ -29,7 +44,7 @@ else
 endif
 
 CC						:= cc
-CFLAGS					:= -Wall -Wextra -Werror -pedantic -O3 $(DEVFLAGS) $(OS_FLAG) $(PIVOT_PERCENTAGE_FLAG)
+CFLAGS					:= -Wall -Wextra -Werror -pedantic -O3 $(DEVFLAGS) $(OS_FLAG) $(PIVOT_PERCENTAGE_FLAG) $(PIVOTB1_PERCENTAGE_FLAG) $(PIVOTB2_PERCENTAGE_FLAG) $(MIN_CHUNK_FLAG)
 RM						:= rm -f
 
 LIB_DIRECTORY			:= ./libs/
@@ -55,8 +70,6 @@ SOURCES_LIST			:= main.c\
 							sort_two.c\
 							sort_three.c\
 							sort_five.c\
-							sort_hundred.c\
-							sort_fivehundred.c\
 							mysort.c\
 							big_sort.c\
 							intarr_bubblesort.c\
@@ -65,7 +78,9 @@ SOURCES_LIST			:= main.c\
 							stack_init.c\
 							array_shifts.c\
 							ps_print_util.c\
-							build_instruction.c
+							build_instruction.c\
+							shorten_instructions.c\
+							count_instructions.c
 SOURCES					:= $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 HEADER_LIST				:= push_swap.h
 HEADER_FILES			:= $(addprefix $(INCLUDE_DIR), $(HEADER_LIST))

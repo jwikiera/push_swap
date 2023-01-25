@@ -23,7 +23,7 @@
     - 5 points for less than 5500 actions
 */
 
-void	delete_node(void *content)
+static void	delete_node(void *content)
 {
 	free(content);
 }
@@ -58,12 +58,47 @@ int	main(int argc, char *argv[])
 		sort_three(array);
 	else if (argc < 7)
 		sort_five(array, argc - 1, &op_lst);
-	else if (argc < 102)
-		ps_bigsort(array, argc - 1, &op_lst);
-		//sort_hundred(array, argc - 1);
 	else
-		ps_bigsort(array, argc - 1, &op_lst);
+	{
+		int params[4] = {PIVOT, PIVOTB1, PIVOTB2, MIN_CHUNK};
+		ps_bigsort(array, argc - 1, &op_lst, params);
+		shorten_instructions(&op_lst);
+		int	delta = -10;
+		while (count_instructions(op_lst) > 5500 && delta < 10)
+		{
+			params[0] += delta;
+			ft_lstclear(&op_lst, delete_node);
+			op_lst = NULL;
+			ps_bigsort(array, argc - 1, &op_lst, params);
+			shorten_instructions(&op_lst);
+			delta ++;
+		}
+		delta = -10;
+		params[0] = 19;
+		while (count_instructions(op_lst) > 5500 && delta < 10)
+		{
+			params[3] += delta;
+			ft_lstclear(&op_lst, delete_node);
+			op_lst = NULL;
+			ps_bigsort(array, argc - 1, &op_lst, params);
+			shorten_instructions(&op_lst);
+			delta ++;
+		}
+		delta = -10;
+		params[0] = 19;
+		params[3] = 10;
+		while (count_instructions(op_lst) > 5500 && delta < 10)
+		{
+			params[1] += delta;
+			ft_lstclear(&op_lst, delete_node);
+			op_lst = NULL;
+			ps_bigsort(array, argc - 1, &op_lst, params);
+			shorten_instructions(&op_lst);
+			delta ++;
+		}
+	}
 	//free(array);
+
 	lst_ptr = op_lst;
 	while(lst_ptr != NULL)
 	{
@@ -71,5 +106,6 @@ int	main(int argc, char *argv[])
 		lst_ptr = lst_ptr->next;
 	}
 	ft_lstclear(&op_lst, delete_node);
+	free(array);
 	return (0);
 }

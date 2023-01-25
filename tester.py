@@ -43,9 +43,10 @@ class Stack:
 
 
 class TestResult:
-    def __init__(self, succeeded: bool, op_count: int):
+    def __init__(self, succeeded: bool, op_count: int, opt_count: int):
         self.succeeded = succeeded
         self.op_count = op_count
+        self.opt_count = opt_count
 
 # custom argpparse number type so that it raises an exception if an int arg is smaller than 1 or bigger than INT_MAX
 def my_int_type(x: str):
@@ -186,7 +187,7 @@ def op_rrr(stack_a: Stack, stack_b: Stack):
     op_rr(stack_b)
 
 
-def check_sort(set_: str, instructions: List[str]):
+def check_sort(set_: str, instructions: List[str], allow_nonins: bool):
     set_ = set_.strip()
     nums_str = set_.split()
     nums = []
@@ -217,6 +218,9 @@ def check_sort(set_: str, instructions: List[str]):
             op_rr(stack_b)
         elif instruction == 'rrr':
             op_rrr(stack_a, stack_b)
+        elif not allow_nonins:
+            print(f'Error, detected non instruction output: "{instruction}".')
+            return False
     prev = None
     for x in stack_a.arr:
         if prev is None:
@@ -248,9 +252,10 @@ def check_optimization(instructions: List[str], color: bool, short: bool):
             optimization_count += 1
     if optimization_count > 0:
         if color:
-            print(f"A total of {GREEN}{optimization_count}{NC} optimizations are possible.")
+            print(f"A total of {GREEN}{optimization_count}{NC} optimizations are possible (total of {MAGENTA}{len(instructions) - optimization_count}{NC} instructions).")
         else:
-            print(f"A total of {optimization_count} optimizations are possible.")
+            print(f"A total of {optimization_count} optimizations are possible. (total of {len(instructions) - optimization_count} instructions)")
+    return optimization_count
 
 
 # test a given set
@@ -271,6 +276,7 @@ def do_test(args, set_: str):
     elif result.stdout is not None:
         res = result.stdout.decode("utf-8").strip()
         instructions = res.split('\n')
+        opt_num = -1
         # print(res)
         # print(check_sort(set_, instructions))
         if args.showops:
@@ -278,8 +284,8 @@ def do_test(args, set_: str):
         elif args.showopsnl:
             print('\n'.join(instructions))
         if args.checkoptimize or args.checkoptshort:
-            check_optimization(instructions, not args.disablecolor, args.checkoptshort)
-        if check_sort(set_, instructions):
+            opt_num = check_optimization(instructions, not args.disablecolor, args.checkoptshort)
+        if check_sort(set_, instructions, args.allow_nonins):
             operation_count = len(instructions)
             categories = list(POINT_DICT.keys())
             category = categories[0]
@@ -298,7 +304,7 @@ def do_test(args, set_: str):
                     if args.errordisplay or args.errorabort:
                         print(set_)
                     if args.errorabort:
-                        return TestResult(False, -1)
+                        return TestResult(False, -1, -1)
                 else:
                     print(f'{green_}OK{nc_} - Operations: {magenta_}{operation_count}{nc_}.')
             else:
@@ -319,13 +325,13 @@ def do_test(args, set_: str):
                     if args.errordisplay or args.pointsfatal:
                         print(set_)
                     if args.pointsfatal:
-                        return TestResult(False, -1)
+                        return TestResult(False, -1, -1)
         else:
             print(f'{RED}KO{NC}')
             if args.errordisplay or args.pointsfatal or args.errorabort:
                 print(set_)
-            return TestResult(False, -1)
-        return TestResult(True, operation_count)
+            return TestResult(False, -1, -1)
+        return TestResult(True, operation_count, opt_num)
 
 
 def main():
@@ -348,7 +354,9 @@ def main():
     parser.add_argument("-b", "--binary", type=my_bin_type, nargs="?", const="push_swap",
                         default="push_swap", help="Location of the tested binary. Default: \"push_swap\".")
     parser.add_argument("--disablecolor", action="store_true", help="Disable colors in the output.")
-    parser.add_argument("--debug", action="store_true", help="Shows set before feeding it into the sorter.")
+    parser.add_argument("--always_show_set", action="store_true", help="Shows set before feeding it into the sorter.")
+    parser.add_argument("--allow_nonins", action="store_true", help="Allow for output that is not regular push_swap "
+                                                                    "instructions, useful for ignoring debug prints.")
     args = parser.parse_args()
 
     if args.set is None:
@@ -365,6 +373,10 @@ def main():
         print(f"testing using {tam} tests of random sets of {nam} numbers ranging between {args.minnum} "
               f"and {args.maxnum}...")
         operations_total: int = 0
+        max_ops = -1
+
+        operations_total_with_optimizations: int = 0
+        max_ops_with_optimizations = -1
         for i in range(tam):
             # https://stackoverflow.com/a/22842411
             num_lst = None
@@ -372,8 +384,8 @@ def main():
                 num_lst = random.sample(range(int(args.minnum), int(args.maxnum)), int(args.numamount))
             except ValueError:
                 exit("Can not build a set of numbers large enough within the given range")
-            if args.debug:
-                print(f'DEBUG: {" ".join(map(str, num_lst))}')
+            if args.always_show_set:
+                print(f'set: {" ".join(map(str, num_lst))}.')
             result: TestResult = do_test(args, ' '.join(map(str, num_lst)))
             if not result.succeeded:
                 if args.errorabort:
@@ -384,10 +396,24 @@ def main():
                     exit(0)
             else:
                 operations_total += result.op_count
+                if result.op_count > max_ops:
+                    max_ops = result.op_count
+                operations_total_with_optimizations += result.op_count - result.opt_count
+                if result.op_count - result.opt_count > max_ops_with_optimizations:
+                    max_ops_with_optimizations = result.op_count - result.opt_count
         if not args.disablecolor:
-            print(f'Average operation count: {MAGENTA}{operations_total // tam}{NC}')
+            print(f'Average operation count: {MAGENTA}{operations_total // tam}{NC}.')
+            print(f'Max operation count: {MAGENTA}{max_ops}{NC}.')
+            if args.checkoptimize or args.checkoptshort:
+                print(f'Average operation count with optimizations: {MAGENTA}{operations_total_with_optimizations // tam}{NC}.')
+                print(f'Max operation count with optimizations: {MAGENTA}{max_ops_with_optimizations}{NC}.')
         else:
-            print(f'Average operation count: {operations_total // tam}')
+            print(f'Average operation count: {operations_total // tam}.')
+            print(f'Max operation count: {max_ops}.')
+            if args.checkoptimize or args.checkoptshort:
+                print(f'Average operation count with optimizations: {operations_total_with_optimizations // tam}.')
+                print(f'Max operation count with optimizations: {max_ops_with_optimizations}.')
+
 
 if __name__ == "__main__":
     main()

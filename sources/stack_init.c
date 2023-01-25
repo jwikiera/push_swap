@@ -12,14 +12,20 @@
 
 #include "push_swap.h"
 
-t_stack	*stack_init(int *arr, int size, char type)
+t_stack	*stack_init(const int *arr, int size, char type)
 {
 	t_stack	*res;
 
 	res = malloc(sizeof(*res));
 	if (!res)
 		return (NULL);
-	res->arr = arr;
+	res->arr = malloc(sizeof(*arr) * size);
+	if (!res->arr)
+	{
+		free(res);
+		return (NULL);
+	}
+	ft_memcpy(res->arr, arr, sizeof(*arr) * size);
 	res->size = size;
 	res->top = 0;
 	res->type = type;
