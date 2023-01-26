@@ -28,6 +28,13 @@ static void	delete_node(void *content)
 	free(content);
 }
 
+int	get_max_ops(int argc)
+{
+	if (argc < 102)
+		return (699);
+	return (5499);
+}
+
 int	main(int argc, char *argv[])
 {
 	int		*array;
@@ -63,39 +70,42 @@ int	main(int argc, char *argv[])
 		int params[4] = {PIVOT, PIVOTB1, PIVOTB2, MIN_CHUNK};
 		ps_bigsort(array, argc - 1, &op_lst, params);
 		shorten_instructions(&op_lst);
-		int	delta = -10;
-		while (count_instructions(op_lst) > 5500 && delta < 10)
+		int instr_len = count_instructions(op_lst);
+		params[0] -= 10;
+		while (count_instructions(op_lst) > get_max_ops(argc) && params[0] < 30)
 		{
-			params[0] += delta;
 			ft_lstclear(&op_lst, delete_node);
 			op_lst = NULL;
 			ps_bigsort(array, argc - 1, &op_lst, params);
 			shorten_instructions(&op_lst);
-			delta ++;
+			instr_len = count_instructions(op_lst);
+			params[0] ++;
 		}
-		delta = -10;
 		params[0] = 19;
-		while (count_instructions(op_lst) > 5500 && delta < 10)
+		params[3] -= 10;
+		while (count_instructions(op_lst) > get_max_ops(argc) && params[3] < 25)
 		{
-			params[3] += delta;
 			ft_lstclear(&op_lst, delete_node);
 			op_lst = NULL;
 			ps_bigsort(array, argc - 1, &op_lst, params);
 			shorten_instructions(&op_lst);
-			delta ++;
+			instr_len = count_instructions(op_lst);
+			params[3] ++;
 		}
-		delta = -10;
 		params[0] = 19;
 		params[3] = 10;
-		while (count_instructions(op_lst) > 5500 && delta < 10)
+		params[1] -= 10;
+		while (count_instructions(op_lst) > get_max_ops(argc) && params[1] < 42)
 		{
-			params[1] += delta;
 			ft_lstclear(&op_lst, delete_node);
 			op_lst = NULL;
 			ps_bigsort(array, argc - 1, &op_lst, params);
 			shorten_instructions(&op_lst);
-			delta ++;
+			instr_len = count_instructions(op_lst);
+			params[1] ++;
 		}
+		if (instr_len == -1)
+			ft_printf("btuh\n");
 	}
 	//free(array);
 
