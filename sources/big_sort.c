@@ -12,7 +12,47 @@
 
 #include "push_swap.h"
 
-static int	int_at_percent_in_arr(const int *arr, int len, int per)
+static void	b_clean(t_stack *s1, t_stack *s2, int *arr)
+{
+	if (s1)
+		free_stack(s1);
+	if (s2)
+		free_stack(s2);
+	if (arr)
+		free(arr);
+}
+
+void	ps_bigsort(const int *arr, int len, t_list **op_lst, int params[4])
+{
+	int		*sorted_array;
+	t_stack	*stack_a;
+	t_stack	*stack_b;
+
+	stack_a = stack_init(arr, len, 'a');
+	if (!stack_a)
+		return ;
+	stack_b = stack_init_empty(len, 'b');
+	if (!stack_b)
+	{
+		free(stack_a);
+		return ;
+	}
+	if (b_loop_one(stack_a, stack_b, params, op_lst) == -1)
+	{
+		b_clean(stack_a, stack_b, 0);
+		return ;
+	}
+	sorted_array = intarr_bubblesort(stack_b->arr + stack_b->top, stack_len(stack_b));
+	if (sorted_array == NULL)
+	{
+		b_clean(stack_a, stack_b, 0);
+		return ;
+	}
+	b_loop_two(stack_a, stack_b, sorted_array, op_lst);
+	b_clean(stack_a, stack_b, sorted_array);
+}
+
+/*static int	int_at_percent_in_arr(const int *arr, int len, int per)
 {
 	double	one_percent;
 
@@ -139,18 +179,14 @@ int	get_num_with_x_below(t_stack *stack, int x)
 	}
 	return (0);
 }
-
-void	ps_bigsort(const int *arr, int len, t_list **op_lst, const int params[4])
+*/
+/*void	ps_bigsort(const int *arr, int len, t_list **op_lst, int *params)
 {
 	int		*sorted_array;
 	t_stack	*stack_a;
 	t_stack	*stack_b;
 	//int		cache_counter;
 
-	int	pivot = params[0];
-	int	pivotb1 = params[1];
-	int	pivotb2 = params[2];
-	int min_chunk = params[3];
 
 	//ft_printf("PIVOT: %d, PIVOTB1: %d, PIVOTB2: %d, MIN_CHUNK: %d\n", PIVOT, PIVOTB1, PIVOTB2, MIN_CHUNK);
 
@@ -166,51 +202,8 @@ void	ps_bigsort(const int *arr, int len, t_list **op_lst, const int params[4])
 		free(stack_a);
 		return ;
 	}
-	while (stack_len(stack_a) != 1)
-	{
-		if (min_chunk > stack_len(stack_a) - 1)
-			min_chunk = stack_len(stack_a) - 1;
-		sorted_array = intarr_bubblesort(stack_a->arr + stack_a->top, stack_len(stack_a));
-		if (sorted_array == NULL)
-		{
-			free_stack(stack_a);
-			free_stack(stack_b);
-			return ;
-		}
 
-		int	pivot_a = int_at_percent_in_arr(sorted_array, stack_len(stack_a), pivot);
-		int	pivot_b = int_at_percent_in_arr(sorted_array, stack_len(stack_a), (int)((double) pivotb1 / 100.0 * (double) pivotb2));
-
-		/* must keep */
-		if (ft_index_of_int(sorted_array, stack_len(stack_a), pivot_a) == 0 && (stack_len(stack_a) > 1))
-			pivot_a = sorted_array[1];
-		if (ft_index_of_int(sorted_array, stack_len(stack_a), pivot_b) == 0  && (stack_len(stack_a) > 1))
-			pivot_b = sorted_array[1];
-
-		if (count_nums_below(stack_a, pivot_a) < min_chunk)
-			pivot_a = get_num_with_x_below(stack_a, min_chunk);
-
-		while (stack_has_smaller_num_than(stack_a, pivot_a))
-		{
-			if (top_val(stack_a) < pivot_a)
-			{
-				op_p(stack_a, stack_b, op_lst);
-				while (stack_has_smaller_num_than(stack_a, pivot_a) && top_val(stack_a) > pivot_a)
-					op_r(stack_a, op_lst);
-				if (top_val(stack_b) < pivot_b)
-					op_r(stack_b, op_lst);
-			}
-			else
-				op_r(stack_a, op_lst);
-		}
-
-		free(sorted_array);
-		sorted_array = NULL;
-	}
-
-	for (int k = 0; k < stack_a->size - 1; ++k) {
-		stack_a->arr[k] = 0;
-	}
+	b_loop_one(stack_a, stack_b, params, op_lst);
 
 	sorted_array = intarr_bubblesort(stack_b->arr + stack_b->top, stack_len(stack_b));
 	if (sorted_array == NULL)
@@ -255,3 +248,4 @@ void	ps_bigsort(const int *arr, int len, t_list **op_lst, const int params[4])
 	free_stack(stack_b);
 	free(sorted_array);
 }
+*/

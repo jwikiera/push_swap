@@ -80,7 +80,15 @@ SOURCES_LIST			:= main.c\
 							ps_print_util.c\
 							build_instruction.c\
 							shorten_instructions.c\
-							count_instructions.c
+							check_short.c\
+							count_instructions.c\
+							cleanup.c\
+							handle_hundred_plus.c\
+							del_node.c\
+							stack_helpers.c\
+							stack_helpers2.c\
+							b_loop_one.c\
+							b_loop_two.c
 SOURCES					:= $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 HEADER_LIST				:= push_swap.h
 HEADER_FILES			:= $(addprefix $(INCLUDE_DIR), $(HEADER_LIST))

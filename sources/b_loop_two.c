@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_two.c                                         :+:      :+:    :+:   */
+/*   b_loop_two.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,16 +12,35 @@
 
 #include "push_swap.h"
 
-void	sort_three(const int *arr)
+void	b_loop_two(t_stack *stack_a, t_stack *stack_b, int *sorted_array, t_list **op_lst)
 {
-	if (arr[1] > arr[0] && arr[2] > arr[0] && arr[1] > arr[2])
-		ft_putstr_fd("rra\nsa\n", 1);
-	else if (arr[1] < arr[0] && arr[2] > arr[0] && arr[2] > arr[1])
-		ft_putstr_fd("sa\n", 1);
-	else if (arr[1] > arr[0] && arr[2] < arr[0] && arr[2] < arr[1])
-		ft_putstr_fd("rra\n", 1);
-	else if (arr[1] < arr[0] && arr[2] < arr[0] && arr[2] > arr[1])
-		ft_putstr_fd("ra\n", 1);
-	else if (arr[1] < arr[0] && arr[2] < arr[0] && arr[2] < arr[1])
-		ft_putstr_fd("ra\nsa\n", 1);
+	int cache_size;
+
+	cache_size = 0;
+	int index = stack_len(stack_b) - 1;
+	while (stack_b->top != -1)
+	{
+		if (index > cache_size && top_val(stack_b) == sorted_array[index - 1 - cache_size])
+		{
+			cache_size ++;
+			op_p(stack_b, stack_a, op_lst);
+		}
+		else
+		{
+			bring_num_to_top(stack_b, sorted_array[index], op_lst);
+			int	i = 0;
+			while (i < cache_size)
+			{
+				op_r(stack_a, op_lst);
+				i ++;
+			}
+			op_p(stack_b, stack_a, op_lst);
+			index -= (cache_size + 1);
+			while (cache_size > 0)
+			{
+				op_rr(stack_a, op_lst);
+				cache_size --;
+			}
+		}
+	}
 }

@@ -1,4 +1,17 @@
 #!/usr/bin/python3
+
+# /* ************************************************************************** */
+# /*                                                                            */
+# /*                                                        :::      ::::::::   */
+# /*   tester.py                                           :+:      :+:    :+:   */
+# /*                                                    +:+ +:+         +:+     */
+# /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
+# /*                                                +#+#+#+#+#+   +#+           */
+# /*   Created: 2022/10/20 11:12:16 by jwikiera          #+#    #+#             */
+# /*   Updated: 2022/10/20 11:12:18 by jwikiera         ###   ########.fr       */
+# /*                                                                            */
+# /* ************************************************************************** */
+
 import argparse
 import os
 import random
@@ -272,13 +285,12 @@ def do_test(args, set_: str):
     operation_count = -1
     if result.stderr is not None:
         pass
-        # print(f'{RED}{result.stderr}{NC}')
     elif result.stdout is not None:
         res = result.stdout.decode("utf-8").strip()
         instructions = res.split('\n')
+        if len(res) == 0:
+            instructions = []
         opt_num = -1
-        # print(res)
-        # print(check_sort(set_, instructions))
         if args.showops:
             print(' '.join(instructions))
         elif args.showopsnl:

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_two.c                                         :+:      :+:    :+:   */
+/*   stack_helpers2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,16 +12,41 @@
 
 #include "push_swap.h"
 
-void	sort_three(const int *arr)
+int	top_val(t_stack *stack)
 {
-	if (arr[1] > arr[0] && arr[2] > arr[0] && arr[1] > arr[2])
-		ft_putstr_fd("rra\nsa\n", 1);
-	else if (arr[1] < arr[0] && arr[2] > arr[0] && arr[2] > arr[1])
-		ft_putstr_fd("sa\n", 1);
-	else if (arr[1] > arr[0] && arr[2] < arr[0] && arr[2] < arr[1])
-		ft_putstr_fd("rra\n", 1);
-	else if (arr[1] < arr[0] && arr[2] < arr[0] && arr[2] > arr[1])
-		ft_putstr_fd("ra\n", 1);
-	else if (arr[1] < arr[0] && arr[2] < arr[0] && arr[2] < arr[1])
-		ft_putstr_fd("ra\nsa\n", 1);
+	if (stack_len(stack))
+		return (stack->arr[stack->top]);
+	return (0);
+}
+
+int	count_nums_below(t_stack *stack, int target)
+{
+	int	i;
+	int	count;
+
+	if (indexof_target(stack, target) == -1)
+		return (-1);
+	i = stack->top;
+	count = 0;
+	while (i < stack->size)
+	{
+		if (stack->arr[i] < target)
+			count ++;
+		i ++;
+	}
+	return (count);
+}
+
+int	get_num_with_x_below(t_stack *stack, int x)
+{
+	int	i;
+
+	i = stack->top;
+	while (i < stack->size)
+	{
+		if (count_nums_below(stack, stack->arr[i]) == x)
+			return (stack->arr[i]);
+		i ++;
+	}
+	return (0);
 }

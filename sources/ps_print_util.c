@@ -31,3 +31,15 @@ void	print_stack(t_stack *stack)
 	}
 	ft_printf("]\n");
 }
+
+void	print_instructions(t_list *op_lst)
+{
+	t_list	*lst_ptr;
+
+	lst_ptr = op_lst;
+	while (lst_ptr != NULL)
+	{
+		ft_printf("%s", lst_ptr->content);
+		lst_ptr = lst_ptr->next;
+	}
+}

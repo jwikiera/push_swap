@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_two.c                                         :+:      :+:    :+:   */
+/*   check_short.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,16 +12,27 @@
 
 #include "push_swap.h"
 
-void	sort_three(const int *arr)
+int	check_short(t_list *op_lst)
 {
-	if (arr[1] > arr[0] && arr[2] > arr[0] && arr[1] > arr[2])
-		ft_putstr_fd("rra\nsa\n", 1);
-	else if (arr[1] < arr[0] && arr[2] > arr[0] && arr[2] > arr[1])
-		ft_putstr_fd("sa\n", 1);
-	else if (arr[1] > arr[0] && arr[2] < arr[0] && arr[2] < arr[1])
-		ft_putstr_fd("rra\n", 1);
-	else if (arr[1] < arr[0] && arr[2] < arr[0] && arr[2] > arr[1])
-		ft_putstr_fd("ra\n", 1);
-	else if (arr[1] < arr[0] && arr[2] < arr[0] && arr[2] < arr[1])
-		ft_putstr_fd("ra\nsa\n", 1);
+	t_list	*node;
+	char	*ci;
+	char	*ni;
+
+	node = op_lst;
+	while (node && node->next)
+	{
+		ci = node->content;
+		ni = node->next->content;
+		if ((!ft_strncmp(ci, "sa", 2) && !ft_strncmp(ni, "sb", 2))
+			|| (!ft_strncmp(ci, "sb", 2) && !ft_strncmp(ni, "sa", 2)))
+			return (0);
+		if ((!ft_strncmp(ci, "ra", 2) && !ft_strncmp(ni, "rb", 2))
+			|| (!ft_strncmp(ci, "rb", 2) && !ft_strncmp(ni, "ra", 2)))
+			return (0);
+		if ((!ft_strncmp(ci, "rra", 3) && !ft_strncmp(ni, "rrb", 3))
+			|| (!ft_strncmp(ci, "rrb", 3) && !ft_strncmp(ni, "rra", 3)))
+			return (0);
+		node = node->next;
+	}
+	return (1);
 }

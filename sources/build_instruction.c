@@ -20,7 +20,7 @@ t_list	*build_instruction(char c1, char c2, char c3)
 	{
 		res = malloc(sizeof(res) * 4);
 		if (!res)
-			return NULL;
+			return (NULL);
 		res[0] = c1;
 		res[1] = c2;
 		res[2] = '\n';
@@ -30,7 +30,7 @@ t_list	*build_instruction(char c1, char c2, char c3)
 	{
 		res = malloc(sizeof(res) * 5);
 		if (!res)
-			return NULL;
+			return (NULL);
 		res[0] = c1;
 		res[1] = c2;
 		res[2] = c3;
