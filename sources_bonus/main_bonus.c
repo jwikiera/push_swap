@@ -57,7 +57,7 @@ static void	helper(t_stack *stack_a, t_stack *stack_b)
 	{
 		if (!valid_instruction(input))
 		{
-			ft_printf("Error\n");
+			ft_putstr_fd("Error\n", 2);
 			exit(0);
 		}
 		else
