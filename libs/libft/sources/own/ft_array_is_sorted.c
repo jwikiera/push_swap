@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intarr_bubblesort.c                                :+:      :+:    :+:   */
+/*   ft_array_is_sorted.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-static int	is_sorted(const int *arr, int len)
+int	ft_array_is_sorted(const int *arr, size_t len)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < len - 1)
@@ -24,31 +24,4 @@ static int	is_sorted(const int *arr, int len)
 		i ++;
 	}
 	return (1);
-}
-
-int	*intarr_bubblesort(const int *arr, int len)
-{
-	int	*res;
-	int	swp;
-	int	i;
-
-	res = malloc(len * sizeof(*res));
-	if (!res)
-		return (NULL);
-	ft_memcpy(res, arr, len * sizeof(*res));
-	while (!is_sorted(res, len))
-	{
-		i = 0;
-		while (i < len - 1)
-		{
-			if (res[i] > res[i + 1])
-			{
-				swp = res[i];
-				res[i] = res[i + 1];
-				res[i + 1] = swp;
-			}
-			i ++;
-		}
-	}
-	return (res);
 }

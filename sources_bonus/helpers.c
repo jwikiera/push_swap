@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_operations2.c                                :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,29 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "checker.h"
 
-void	op_rr(t_stack *stack, t_list **op_lst)
+void	checker_cleanup(int *arr, t_stack *s1, t_stack *s2)
 {
-	int		swp;
-	t_list	*node;
-
-	node = NULL;
-	if (((void *)op_lst) != NULL)
-		node = build_instruction('r', 'r', stack->type);
-	if (node)
-		lstadd_back_wrapper(op_lst, node);
-	if (stack->top == -1)
-		return ;
-	swp = stack->arr[stack->size - 1];
-	shift_down(stack->arr, stack->size);
-	stack->arr[stack->top] = swp;
-}
-
-void	op_rrr(t_stack *stack_a, t_stack *stack_b, int print)
-{
-	if (print)
-		ft_putstr_fd("rrr\n", 1);
-	op_rr(stack_a, 0);
-	op_rr(stack_b, 0);
+	free(arr);
+	free_stack(s1);
+	free_stack(s2);
 }

@@ -88,6 +88,8 @@ long		ft_atoi_l(const char *nptr);
 int			ft_get_str_sign(const char *str);
 void		ft_free_split(char **split_res, size_t size);
 int			ft_index_of_int(const int *arr, int size, int target);
+int			ft_array_is_sorted(const int *arr, size_t len);
+int			*ft_intarr_bubblesort(const int *arr, size_t len);
 
 /* math */
 int			ft_min_int(int a, int b);

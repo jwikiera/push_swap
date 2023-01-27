@@ -51,7 +51,6 @@ void	sort_five(int *arr, int len, t_list **op_lst);
 void	ps_mysort(int *arr, int len, t_list **op_lst);
 void	ps_bigsort(const int *arr, int len,
 			t_list **op_lst, int *params);
-int		*intarr_bubblesort(const int *arr, int len);
 void	shorten_instructions(t_list **op_lst);
 int		count_instructions(t_list *op_lst);
 void	print_instructions(t_list *op_lst);
@@ -59,6 +58,7 @@ void	ps_cleanup(t_list **op_lst, int *arr);
 void	handle_hundred_plus(t_list **op_lst, int *array, int argc);
 void	ps_del_node(void *content);
 int		check_short(t_list *op_lst);
+void	lstadd_back_wrapper(t_list **lst, t_list *new);
 
 typedef struct s_stack
 {

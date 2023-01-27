@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_operations2.c                                :+:      :+:    :+:   */
+/*   lstadd_back_wrapper.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwikiera <jwikiera@student.42lausan>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,27 +12,8 @@
 
 #include "push_swap.h"
 
-void	op_rr(t_stack *stack, t_list **op_lst)
+void	lstadd_back_wrapper(t_list **lst, t_list *new)
 {
-	int		swp;
-	t_list	*node;
-
-	node = NULL;
-	if (((void *)op_lst) != NULL)
-		node = build_instruction('r', 'r', stack->type);
-	if (node)
-		lstadd_back_wrapper(op_lst, node);
-	if (stack->top == -1)
-		return ;
-	swp = stack->arr[stack->size - 1];
-	shift_down(stack->arr, stack->size);
-	stack->arr[stack->top] = swp;
-}
-
-void	op_rrr(t_stack *stack_a, t_stack *stack_b, int print)
-{
-	if (print)
-		ft_putstr_fd("rrr\n", 1);
-	op_rr(stack_a, 0);
-	op_rr(stack_b, 0);
+	if (lst)
+		ft_lstadd_back(lst, new);
 }

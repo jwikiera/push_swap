@@ -75,7 +75,7 @@ void	ps_mysort(int *arr, int len, t_list **op_lst)
 		free(stack_a);
 		return ;
 	}
-	sorted_array = intarr_bubblesort(arr, len);
+	sorted_array = ft_intarr_bubblesort(arr, len);
 	if (sorted_array == NULL)
 	{
 		free(stack_b);

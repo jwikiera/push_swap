@@ -17,9 +17,11 @@ void	op_s(t_stack *stack, t_list **op_lst)
 	int		swp;
 	t_list	*node;
 
-	node = build_instruction('s', stack->type, 0);
+	node = NULL;
+	if (((void *)op_lst) != NULL)
+		node = build_instruction('s', stack->type, 0);
 	if (node)
-		ft_lstadd_back(op_lst, node);
+		lstadd_back_wrapper(op_lst, node);
 	if (stack->top == -1 || stack->top > stack->size - 2)
 		return ;
 	swp = stack->arr[stack->top];
@@ -39,9 +41,11 @@ void	op_p(t_stack *stack_src, t_stack *stack_dst, t_list **op_lst)
 {
 	t_list	*node;
 
-	node = build_instruction('p', stack_dst->type, 0);
+	node = NULL;
+	if (((void *)op_lst) != NULL)
+		node = build_instruction('p', stack_dst->type, 0);
 	if (node)
-		ft_lstadd_back(op_lst, node);
+		lstadd_back_wrapper(op_lst, node);
 	if (stack_src->top == -1)
 		return ;
 	if (stack_dst->top == -1)
@@ -63,9 +67,11 @@ void	op_r(t_stack *stack, t_list **op_lst)
 	int		swp;
 	t_list	*node;
 
-	node = build_instruction('r', stack->type, 0);
+	node = NULL;
+	if (((void *)op_lst) != NULL)
+		node = build_instruction('r', stack->type, 0);
 	if (node)
-		ft_lstadd_back(op_lst, node);
+		lstadd_back_wrapper(op_lst, node);
 	if (stack->top == -1)
 		return ;
 	swp = stack->arr[stack->top];

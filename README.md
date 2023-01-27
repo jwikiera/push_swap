@@ -6,11 +6,15 @@ The goal is to output a set of these instructions and keep their number as low a
 
 The bonus for this assignment is creating a second program (`checker`) that checks if a given set of instructions sorts a given set of numbers correctly.
 
-I have also written a more advanced tool for testing, in Python (`tester.py`) which, besides having the same abilities as `checker` does, can also generate arbitrary amounts of tests. Its `argparse` interface includes all necessary details.
+For more details on the assignment, check `subject.pdf`.
+
+I have also written a more advanced tool for testing and debugging, in Python (`tester.py`) which, besides having the same abilities as `checker` does, can also generate arbitrary amounts of tests. Its `argparse` interface includes all necessary details.
 
 Example usage of the Python checker: `./tester.py --testamount 100 --numamount 5 --minnum 1 --maxnum 10 --errorabort`: 
 performs 100 tests with random sets of 5 numbers, the numbers ranging from 1 to 10 and aborts if an error occurs, displaying
 the erroring set.
+
+---
 
 Here are the instructions used for sorting:
 
@@ -52,3 +56,34 @@ How the amount of instructions affects the grade:
   * 1 point for less than 11500
 
 Validating the project requires at least 80/100 points (there are also points attributed for other things).
+
+---
+
+How does my solution work?
+
+Similarly to certain algorithms (like quicksort), I first choose a pivot<sup>*</sup> and divide my initial stack
+in half. I then proceed to move the upper half to the second stack. While doing so, I choose a second pivot -
+if a number is bigger than the pivot, it stays on top, otherwise it's sent to the bottom. I repeat these steps
+until my first stack is left with one element (the biggest), and the second stack looks like this:
+
+![stack_b](screenshots/stack_b.png)
+
+Then, I look for the biggest element in the second stack and move it to the first stack. This is
+repeated until there are no elements left on the second stack. The first stack is then sorted.
+
+I also perform three major optimizations:
+* Instructions are stored before being output and if any instructions can be contracted (for example `ra` + `rb` into `rr`), they are.
+* While in the second phase, while moving elements back from the second to the first stack, if any elements happen to be in the right order prior to finding the largest numbers, they are immediately moved on the first stack. When the biggest element is also moved to the first stack, the amount of operations required to rearrange elements is lesser than if only the biggest element had been moved.
+* If I don't get a number of instructions lower than desired, I set the pivot to a lower value and retry, incrementing until a limit or the amount of instructions is acceptable.
+
+<sup>*</sup>How are the pivots determined? At first it was the median. Then I saw that changing the pivot can 
+lower or add to the amount of instructions. I first used a Python script to determine the best first pivot, while
+keeping the second at the median. With this result I looked for an optimal value of the second pivot.
+Changing then the first pivot, only resulted in worse results, so I did not bother testing all possible combinations
+of pivots.
+
+Below is a graph with the results of the first test. The script executed hundred tests for each pivot value and kept the average number
+of instructions. The amount of numbers to sort was also hundred. The optimal percentage at which the pivot should
+separate the first stack, for hundred numbers, was at that time (the algorithm was a bit different) 44%.
+
+![graph](screenshots/graph.png)

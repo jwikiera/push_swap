@@ -50,7 +50,7 @@ void	ps_bigsort(const int *arr, int len, t_list **op_lst, int params[4])
 		b_clean(stack_a, stack_b, 0);
 		return ;
 	}
-	sorted_array = intarr_bubblesort(stack_b->arr + stack_b->top,
+	sorted_array = ft_intarr_bubblesort(stack_b->arr + stack_b->top,
 			stack_len(stack_b));
 	if (sorted_array == NULL)
 	{

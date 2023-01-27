@@ -1,4 +1,6 @@
 NAME					:= push_swap
+BONUS_NAME				:= checker
+
 
 UNAME_S					:= $(shell uname -s)
 
@@ -43,10 +45,10 @@ else
 	FSANITIZE			:=
 endif
 
-ifdef release
-	DEVFLAGS			:=
-else
+ifdef DEBUG
 	DEVFLAGS			:= -fno-omit-frame-pointer -ggdb -O0 $(FSANITIZE)
+else
+	DEVFLAGS			:=
 endif
 
 CC						:= cc
@@ -64,10 +66,12 @@ LIBPRINTF_DIRECTORY		:= $(LIB_DIRECTORY)libprintf/
 LIBPRINTF_HEADERS		:= $(LIBPRINTF_DIRECTORY)includes/
 
 INCLUDE_DIR				:= ./includes/
+INCLUDE_DIR_BONUS		:= ./includes_bonus/
 
 # lm: default math lib
 LIBRARIES				:= -lftprintf -lft -L. -L$(LIBFT_DIRECTORY) -L$(LIBPRINTF_DIRECTORY) $(FRAMEWORK) $(LINUX_LIBS)
 INCLUDES				:= -I$(LIBFT_HEADERS) -I$(LIBPRINTF_HEADERS) -I$(INCLUDE_DIR) $(LINUX_INCLUDES)
+INCLUDES_BONUS			:= -I$(INCLUDE_DIR_BONUS)
 
 SOURCES_DIRECTORY		:= ./sources/
 SOURCES_LIST			:= main.c\
@@ -78,7 +82,6 @@ SOURCES_LIST			:= main.c\
 							sort_five.c\
 							mysort.c\
 							big_sort.c\
-							intarr_bubblesort.c\
 							stack_operations.c\
 							stack_operations2.c\
 							stack_init.c\
@@ -94,8 +97,8 @@ SOURCES_LIST			:= main.c\
 							stack_helpers.c\
 							stack_helpers2.c\
 							b_loop_one.c\
-							b_loop_two.c
-SOURCES					:= $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
+							b_loop_two.c\
+							lstadd_back_wrapper.c
 HEADER_LIST				:= push_swap.h
 HEADER_FILES			:= $(addprefix $(INCLUDE_DIR), $(HEADER_LIST))
 
@@ -103,17 +106,26 @@ OBJECTS_DIRECTORY		:= objects/
 OBJECTS_LIST			:= $(patsubst %.c, %.o, $(SOURCES_LIST))
 OBJECTS					:= $(addprefix $(OBJECTS_DIRECTORY), $(OBJECTS_LIST))
 
-.PHONY: all clean fclean re docker_build docker_run docker_clean
+SOURCES_DIRECTORY_BONUS	:= ./sources_bonus/
+SOURCES_LIST_BONUS		:= main_bonus.c\
+							perform_ops.c\
+							helpers.c
+HEADER_LIST_BONUS		:= checker.h
+HEADER_FILES_BONUS		:= $(addprefix $(INCLUDE_DIR_BONUS), $(HEADER_LIST_BONUS))
 
-all: $(NAME)
+OBJECTS_DIRECTORY_BONUS	:= objects_bonus/
+OBJECTS_LIST_BONUS		:= $(patsubst %.c, %.o, $(SOURCES_LIST_BONUS))
+OBJECTS_BONUS			:= $(addprefix $(OBJECTS_DIRECTORY_BONUS), $(OBJECTS_LIST_BONUS))
+
+.PHONY: all clean fclean re docker_build docker_run docker_clean bonus
+
+all: $(NAME) #$(BONUS_NAME)
 
 $(OBJECTS_DIRECTORY):
 	mkdir -p $(OBJECTS_DIRECTORY)
-	#@echo "$(NAME): $(GREEN)$(OBJECTS_DIRECTORY) was created$(RESET)"
 
 $(OBJECTS_DIRECTORY)%.o : $(SOURCES_DIRECTORY)%.c $(HEADER_FILES)
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
-	#@echo "$(GREEN).$(RESET)\c"
 
 $(LIBFT):
 	@echo "$(NAME): Creating $(LIBFT)..."
@@ -126,25 +138,37 @@ $(LIBPRINTF):
 $(NAME): $(LIBFT) $(LIBPRINTF) $(OBJECTS_DIRECTORY) $(OBJECTS) $(HEADER_FILES)
 	$(CC) $(CFLAGS) $(OBJECTS) $(LIBRARIES) $(INCLUDES) -o $(NAME)
 
+
+bonus: $(BONUS_NAME)
+
+$(OBJECTS_DIRECTORY_BONUS):
+	mkdir -p $(OBJECTS_DIRECTORY_BONUS)
+
+$(OBJECTS_DIRECTORY_BONUS)%.o : $(SOURCES_DIRECTORY_BONUS)%.c $(HEADER_FILES) $(HEADER_FILES_BONUS)
+	$(CC) $(CFLAGS) -c $(INCLUDES) $(INCLUDES_BONUS) $< -o $@
+
+$(BONUS_NAME): $(LIBFT) $(LIBPRINTF) $(OBJECTS_DIRECTORY) $(OBJECTS) $(OBJECTS_DIRECTORY_BONUS) $(OBJECTS_BONUS) $(HEADER_FILES) $(HEADER_FILES_BONUS)
+	$(CC) $(CFLAGS) $(filter-out objects/main.o,$(OBJECTS)) $(OBJECTS_BONUS) $(LIBRARIES) $(INCLUDES) $(INCLUDES_BONUS) -o $(BONUS_NAME)
+
+
 clean:
-	@$(MAKE) -sC $(LIBPRINTF_DIRECTORY) clean
-	@$(MAKE) -sC $(LIBFT_DIRECTORY) clean
-	@rm -rf $(OBJECTS_DIRECTORY)
-	@rm -rf *.dSYM
-	@echo "$(NAME): $(RED)$(OBJECTS_DIRECTORY) was deleted$(RESET)"
-	@echo "$(NAME): $(RED)object files were deleted$(RESET)"
+	$(MAKE) -sC $(LIBPRINTF_DIRECTORY) clean
+	$(MAKE) -sC $(LIBFT_DIRECTORY) clean
+	rm -rf $(OBJECTS_DIRECTORY)
+	rm -rf $(OBJECTS_DIRECTORY_BONUS)
+	rm -rf *.dSYM
+
 
 clean_ps:
-	@rm -rf $(OBJECTS_DIRECTORY)
-	@rm -rf *.dSYM
-	@echo "$(NAME): $(RED)$(OBJECTS_DIRECTORY) was deleted$(RESET)"
-	@echo "$(NAME): $(RED)object files were deleted$(RESET)"
+	rm -rf $(OBJECTS_DIRECTORY)
+	rm -rf *.dSYM
+
 
 fclean: clean
-	@$(MAKE) -sC $(LIBFT_DIRECTORY) clean
-	@$(MAKE) -sC $(LIBPRINTF_DIRECTORY) clean
-	@rm -f $(NAME)
-	@echo "$(NAME): $(NAME) was deleted"
+	$(MAKE) -sC $(LIBFT_DIRECTORY) clean
+	$(MAKE) -sC $(LIBPRINTF_DIRECTORY) clean
+	rm -f $(NAME)
+	rm -f $(BONUS_NAME)
 
 docker_build:
 	docker build -t $(NAME) .
@@ -160,13 +184,22 @@ re: fclean all
 re_ps: clean_ps all
 
 norm:
-	norminette includes/ sources/ libs/libft/ libs/libprintf/
+	norminette includes/ sources/ libs/libft/ libs/libprintf/ sources_bonus/
 
-funcs: $(NAME)
+funcs: $(NAME) $(BONUS_NAME))
+	@echo "Functions used in $(NAME):"
 	nm -u $(NAME)
+	@echo "Functions used in $(BONUS_NAME):"
+	nm -u $(BONUS_NAME)
 
 test: $(NAME)
-	./$(NAME)
+	./tester.py -t 10 -n 1 -r
+	./tester.py -t 10 -n 2 -r
+	./tester.py -t 10 -n 3 -r
+	./tester.py -t 10 -n 4 -r
+	./tester.py -t 10 -n 5 -r
+	./tester.py -t 10 -n 100 -r
+	./tester.py -t 10 -n 500 -r
 
 francinette_lft:
 	cd libs/libft && cp includes/libft.h .

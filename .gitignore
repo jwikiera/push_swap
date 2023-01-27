@@ -5,6 +5,7 @@ objects
 *.dylib
 *.swp
 push_swap
+checker
 *.swiftdoc
 *.swiftmodule
 *.dSYM

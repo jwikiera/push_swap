@@ -66,7 +66,7 @@ int	b_loop_one(t_stack *stack_a, t_stack *stack_b, int *params, t_list **op_lst)
 	{
 		if (ld.minchunk > stack_len(stack_a) - 1)
 			ld.minchunk = stack_len(stack_a) - 1;
-		ld.sorted_array = intarr_bubblesort(stack_a->arr + stack_a->top,
+		ld.sorted_array = ft_intarr_bubblesort(stack_a->arr + stack_a->top,
 				stack_len(stack_a));
 		if (ld.sorted_array == NULL)
 		{

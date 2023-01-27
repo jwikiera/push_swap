@@ -35,6 +35,18 @@ static int	free_arr(int *arr)
 	return (0);
 }
 
+static void	handle_helper(int argc, int *array, t_list **op_lst)
+{
+	if (argc == 3)
+		sort_two(array);
+	else if (argc == 4)
+		sort_three(array);
+	else if (argc < 7)
+		sort_five(array, argc - 1, op_lst);
+	else
+		handle_hundred_plus(op_lst, array, argc);
+}
+
 int	main(int argc, char *argv[])
 {
 	int		*array;
@@ -46,18 +58,14 @@ int	main(int argc, char *argv[])
 	if (!chk_args(argc, argv))
 		exit(handle_exit());
 	array = args_to_intarray(argc, argv);
+	if (!array)
+		return (1);
 	if (argc == 2)
 		argc = count_words(argv[1], ' ') + 1;
 	if (argc == 1 || argc == 2)
 		exit(free_arr(array));
-	else if (argc == 3)
-		sort_two(array);
-	else if (argc == 4)
-		sort_three(array);
-	else if (argc < 7)
-		sort_five(array, argc - 1, &op_lst);
 	else
-		handle_hundred_plus(&op_lst, array, argc);
+		handle_helper(argc, array, &op_lst);
 	print_instructions(op_lst);
 	ps_cleanup(&op_lst, array);
 	return (0);
