@@ -35,13 +35,9 @@ static char	*inttrim(const char *str)
 	char	*res;
 	int		i;
 
-	if (ft_strlen(str) == 1 && str[0] == '0')
-	{
-		trimmed = malloc(sizeof("0"));
-		ft_strlcpy(trimmed, "0", sizeof("0"));
-		return (trimmed);
-	}
 	trimmed = ft_powertrim(str, "+-");
+	if (ft_strlen(trimmed) == 1 && trimmed[0] == '0')
+		return (trimmed);
 	if (!trimmed)
 		return (NULL);
 	i = 0;
