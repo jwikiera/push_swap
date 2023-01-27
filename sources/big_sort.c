@@ -37,7 +37,7 @@ static int	init_stacks(t_stack **stack_a,
 	return (1);
 }
 
-void	ps_bigsort(const int *arr, int len, t_list **op_lst, int params[4])
+void	ps_bigsort(const int *arr, int len, t_list **op_lst, int *params)
 {
 	int		*sorted_array;
 	t_stack	*stack_a;
