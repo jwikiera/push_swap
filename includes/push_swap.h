@@ -74,7 +74,6 @@ void	free_stack(t_stack *stack);
 void	print_stack(t_stack *stack);
 t_list	*build_instruction(char c1, char c2, char c3);
 
-
 int		int_at_percent_in_arr(const int *arr, int len, int per);
 int		indexof_target(t_stack *stack, int target);
 int		stack_has_smaller_num_than(t_stack *stack, int num);
@@ -96,7 +95,9 @@ void	op_rrr(t_stack *stack_a, t_stack *stack_b, int print);
 void	shift_down(int *arr, int len);
 void	shift_up(int *arr, int len);
 
-int		b_loop_one(t_stack *stack_a, t_stack *stack_b, int *params, t_list **op_lst);
-void	b_loop_two(t_stack *stack_a, t_stack *stack_b, int *sorted_array, t_list **op_lst);
+int		b_loop_one(t_stack *stack_a, t_stack *stack_b,
+			int *params, t_list **op_lst);
+void	b_loop_two(t_stack *stack_a, t_stack *stack_b,
+			int *sorted_array, t_list **op_lst);
 
 #endif
