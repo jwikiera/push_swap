@@ -39,8 +39,14 @@ ifdef minchunk
 	MIN_CHUNK_FLAG		:= -D MIN_CHUNK=$(minchunk)
 endif
 
+ifndef addressoff
+	FSANADDRESS			:= -fsanitize=address
+else
+	FSANADDRESS			:=
+endif
+
 ifndef fsanitizeoff
-	FSANITIZE			:= -fno-omit-frame-pointer -fstack-protector-all -fsanitize=address $(FSANITIZELEAK)
+	FSANITIZE			:= -fno-omit-frame-pointer -fstack-protector-all $(FSANADDRESS) $(FSANITIZELEAK)
 else
 	FSANITIZE			:=
 endif
