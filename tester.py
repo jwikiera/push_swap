@@ -402,10 +402,10 @@ def main():
             if not result.succeeded:
                 if args.errorabort:
                     print("Aborting, --errorabort was specified.")
-                    exit(0)
+                    exit(3)
                 if args.pointsfatal:
                     print("Aborting, --pointsfatal was specified.")
-                    exit(0)
+                    exit(3)
             else:
                 operations_total += result.op_count
                 if result.op_count > max_ops:
