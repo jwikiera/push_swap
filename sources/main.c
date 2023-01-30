@@ -62,6 +62,11 @@ int	main(int argc, char *argv[])
 		return (1);
 	if (argc == 2)
 		argc = count_words(argv[1], ' ') + 1;
+	if (ft_array_is_sorted(array, argc - 1))
+	{
+		ps_cleanup(&op_lst, array);
+		exit(0);
+	}
 	if (argc == 1 || argc == 2)
 		exit(free_arr(array));
 	else

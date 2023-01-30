@@ -40,13 +40,13 @@ ifdef minchunk
 endif
 
 ifndef fsanitizeoff
-	FSANITIZE			:= -fstack-protector-all -fsanitize=address $(FSANITIZELEAK)
+	FSANITIZE			:= -fno-omit-frame-pointer -fstack-protector-all -fsanitize=address $(FSANITIZELEAK)
 else
 	FSANITIZE			:=
 endif
 
 ifdef DEBUG
-	DEVFLAGS			:= -fno-omit-frame-pointer -ggdb -O0 $(FSANITIZE)
+	DEVFLAGS			:= -ggdb -O0 $(FSANITIZE)
 else
 	DEVFLAGS			:=
 endif
