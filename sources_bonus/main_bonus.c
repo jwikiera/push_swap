@@ -86,7 +86,8 @@ int	main(int argc, char *argv[])
 	if (!init_stacks(&stack_a, &stack_b, array, argc))
 		return (1);
 	helper(stack_a, stack_b);
-	if (stack_a->top == 0 && ft_array_is_sorted(stack_a->arr, stack_a->size))
+	if (stack_a->top == 0 && stack_b->top == -1
+		&& ft_array_is_sorted(stack_a->arr, stack_a->size))
 		ft_printf("OK\n");
 	else
 		ft_printf("KO\n");
