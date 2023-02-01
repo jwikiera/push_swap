@@ -36,10 +36,10 @@ static char	*inttrim(const char *str)
 	int		i;
 
 	trimmed = ft_powertrim(str, "+-");
-	if (ft_strlen(trimmed) == 1 && trimmed[0] == '0')
-		return (trimmed);
 	if (!trimmed)
 		return (NULL);
+	if (ft_strlen(trimmed) == 1 && trimmed[0] == '0')
+		return (trimmed);
 	i = 0;
 	while (trimmed[i] && trimmed[i] == '0')
 		i ++;
@@ -77,11 +77,15 @@ static int	free_trimmed(char *str)
 	return (0);
 }
 
-int	ft_str_is_int(const char *str)
+int	ft_str_is_int(const char *str, int allow_double_signs)
 {
 	char	*trimmed;
 	int		sign;
 
+	if (ft_has_syms_after_nums(str))
+		return (0);
+	if (!allow_double_signs && str_has_multiple_signs(str))
+		return (0);
 	if (!str || !has_num_digits(str))
 		return (0);
 	sign = ft_get_str_sign(str);

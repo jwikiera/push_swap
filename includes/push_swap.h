@@ -100,4 +100,6 @@ int		b_loop_one(t_stack *stack_a, t_stack *stack_b,
 void	b_loop_two(t_stack *stack_a, t_stack *stack_b,
 			int *sorted_array, t_list **op_lst);
 
+int		handle_exit(void);
+
 #endif

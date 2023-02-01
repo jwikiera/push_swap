@@ -81,7 +81,7 @@ int			*ft_realloc_intarr(int *src, size_t arr_size, size_t new_size);
 int			**ft_realloc_int2darr(int **src, size_t elem_size,
 				size_t arr_size, size_t new_size);
 char		*ft_realloc_chararr(char *src, size_t arr_size, size_t new_size);
-int			ft_str_is_int(const char *str);
+int			ft_str_is_int(const char *str, int allow_double_signs);
 char		*ft_powertrim(const char *str, const char *set);
 int			ft_isspace(char c);
 long		ft_atoi_l(const char *nptr);
@@ -90,6 +90,10 @@ void		ft_free_split(char **split_res, size_t size);
 int			ft_index_of_int(const int *arr, int size, int target);
 int			ft_array_is_sorted(const int *arr, size_t len);
 int			*ft_intarr_bubblesort(const int *arr, size_t len);
+char		*ft_blank_trim(const char *str);
+int			str_has_multiple_signs(const char *str);
+int			ft_has_syms_after_nums(const char *str);
+size_t		ft_char_cnt(const char *haystack, char needle);
 
 /* math */
 int			ft_min_int(int a, int b);

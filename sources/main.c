@@ -23,7 +23,7 @@
     - 5 points for less than 5500 actions
 */
 
-static int	handle_exit(void)
+int	handle_exit(void)
 {
 	ft_putstr_fd("Error\n", 2);
 	return (1);

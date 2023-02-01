@@ -18,3 +18,5 @@ venv
 venv/
 venv/*
 builds/*
+ps_tester2
+Push_Swap_Tester

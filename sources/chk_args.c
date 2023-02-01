@@ -65,7 +65,7 @@ int	chk_one_arg(char *argv[])
 	word_count = count_words(argv[1], ' ');
 	while (i < word_count)
 	{
-		if (!ft_str_is_int(split_res[i]))
+		if (!ft_str_is_int(split_res[i], 0))
 		{
 			ft_free_split(split_res, word_count);
 			return (0);
@@ -85,7 +85,7 @@ int	chk_args(int argc, char *argv[])
 	i = 1;
 	while (i < argc)
 	{
-		if (!ft_str_is_int(argv[i]))
+		if (!ft_str_is_int(argv[i], 0))
 			return (0);
 		i ++;
 	}
