@@ -192,7 +192,7 @@ re_ps: clean_ps all
 norm:
 	norminette includes/ sources/ libs/libft/ libs/libprintf/ sources_bonus/ includes_bonus/
 
-funcs: $(NAME) $(BONUS_NAME))
+funcs: $(NAME) $(BONUS_NAME)
 	@echo "Functions used in $(NAME):"
 	nm -u $(NAME)
 	@echo "Functions used in $(BONUS_NAME):"
@@ -206,6 +206,31 @@ test: $(NAME)
 	./tester.py -t 10 -n 5 -r
 	./tester.py -t 10 -n 100 -r
 	./tester.py -t 10 -n 500 -r
+
+test_hermes: $(NAME)
+	rm -rf Push_Swap_Tester
+	git clone "https://github.com/tricaducee/Push_Swap_Tester.git"
+	cd Push_Swap_Tester && ./test
+	rm -rf Push_Swap_Tester
+
+test_leo: $(NAME)
+	rm -rf push_swap_tester
+	git clone https://github.com/LeoFu9487/push_swap_tester.git
+	cd push_swap_tester && bash ./basic_test.sh
+	rm -rf push_swap_tester
+
+wait:
+	read -p "Press enter to continue"
+
+test_all: $(NAME)
+	make norm
+	make wait
+	make test
+	make wait
+	make test_hermes
+	make wait
+	make test_leo
+	make wait
 
 francinette_lft:
 	cd libs/libft && cp includes/libft.h .
