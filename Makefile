@@ -222,7 +222,7 @@ test_leo: $(NAME)
 wait:
 	read -p "Press enter to continue"
 
-test_all: $(NAME)
+test_all: $(NAME) $(BONUS_NAME) fclean
 	make norm
 	make wait
 	make test
