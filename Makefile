@@ -236,3 +236,9 @@ francinette_lft:
 	cd libs/libft && cp includes/libft.h .
 	cd libs/libft && ~/francinette/tester.sh
 	cd libs/libft && rm libft.h
+
+random100:
+	python random_set.py 100
+
+random500:
+	python random_set.py 500
