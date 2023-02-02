@@ -190,7 +190,7 @@ re: fclean all
 re_ps: clean_ps all
 
 norm:
-	norminette includes/ sources/ libs/libft/ libs/libprintf/ sources_bonus/
+	norminette includes/ sources/ libs/libft/ libs/libprintf/ sources_bonus/ includes_bonus/
 
 funcs: $(NAME) $(BONUS_NAME))
 	@echo "Functions used in $(NAME):"
